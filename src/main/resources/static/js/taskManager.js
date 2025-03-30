@@ -179,3 +179,66 @@ document.addEventListener('DOMContentLoaded', () => {
   overallProgress.textContent = `${percentage}%`;
   overallProgressBar.value = percentage;
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Edit/Cancel buttons
+    const editBtn = document.querySelector('.btn-edit');
+    const cancelBtn = document.querySelector('.cancel-edit');
+    const taskMainContent = document.querySelector('.task-main-content');
+    const taskEditForm = document.querySelector('.task-edit-form');
+    const editForm = document.querySelector('.task-form');
+
+    // Task fields (to update on save)
+    const taskTitle = document.querySelector('.task-header h1');
+    const dueDateField = document.querySelector('.due-date');
+    const priorityField = document.querySelector('.priority');
+    const assigneeField = document.querySelector('.assignee span');
+    const taskDescription = document.querySelector('.task-description p');
+
+    if (editBtn && taskEditForm) {
+        editBtn.addEventListener('click', function() {
+            taskMainContent.style.display = 'none';
+            taskEditForm.style.display = 'block';
+        });
+    }
+
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', function() {
+            taskMainContent.style.display = 'block';
+            taskEditForm.style.display = 'none';
+        });
+    }
+
+    if (editForm) {
+        editForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent page reload
+
+            // Update the task details on the page
+            taskTitle.textContent = editForm.querySelector('input[type="text"]').value;
+            dueDateField.textContent = formatDate(editForm.querySelector('input[type="date"]').value);
+            
+            const priority = editForm.querySelector('select').value;
+            priorityField.textContent = priority.charAt(0).toUpperCase() + priority.slice(1);
+            priorityField.className = 'priority ' + priority; // Update priority color
+            
+            const assigneeSelect = editForm.querySelector('select[name="assignee"]').value;
+            //const selectedOption = assigneeSelect.querySelector(`option[value="${data.assignee}"]`);
+            // if (selectedOption) {
+            //     assigneeName.textContent = selectedOption.text;
+            //     assigneeAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedOption.text)}&background=random`;
+            // }
+
+            taskDescription.textContent = editForm.querySelector('textarea').value;
+
+            // Hide the edit form
+            taskMainContent.style.display = 'block';
+            taskEditForm.style.display = 'none';
+        });
+    }
+
+    // Helper: Format date from YYYY-MM-DD to DD/MM/YYYY
+    function formatDate(dateString) {
+        const [year, month, day] = dateString.split('-');
+        return `${day}/${month}/${year}`;
+    }
+});

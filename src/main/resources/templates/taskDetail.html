@@ -1,259 +1,122 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Details</title>
+    <title>Task Manager</title>
     <link rel="stylesheet" href="/css/taskManager.css">
-    <style>
-        body {
-            background-color: #d6c5f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            font-family: Arial, sans-serif;
-        }
-    
-        .task-container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
-            width: 900px;
-            display: flex;
-            flex-direction: column;
-        }
-    
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-    
-        .edit-btn, .add-task-btn {
-            background-color: #9085e6;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-    
-        .task-content {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            margin-bottom: 20px; /* Espacio entre las secciones */
-        }
-    
-        .task-info {
-            flex: 1;
-            margin-right: 20px;
-        }
-    
-        .owner-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background-color: #b3f0ff;
-            padding: 10px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            margin-left: auto;
-        }
-    
-        .avatar {
-            background-color: #85d3f2;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-        }
-    
-        .task-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-    
-        .task-title {
-            display: flex;
-            align-items: baseline;
-            gap: 5px;
-        }
-    
-        .task-number {
-            font-size: 0.9em;
-            color: gray;
-        }
-    
-        .edit-btn {
-            margin: 0 10px;
-        }
-    
-        .task-description {
-            border: 2px solid #b3b3b3;
-            padding: 10px;
-            border-radius: 10px;
-            width: 100%;
-            height: 100%;
-        }
-    
-        .task-details {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            border-left: 2px solid #ccc;
-            padding-left: 20px;
-            padding-top: 30px;
-            padding-bottom: 30px;
-        }
-    
-        .detail-item {
-            display: flex;
-            flex-direction: column;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #ccc;
-        }
-    
-        .detail-item:last-child {
-            border-bottom: none;
-        }
-    
-        .comments {
-            margin-top: 20px;
-            width: 100%; /* Hace que ocupe todo el ancho */
-            margin-bottom: 20px; /* Asegura que haya espacio debajo de la sección de comentarios */
-        }
-    
-        .comment-box {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            background-color: #f6f8fa;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #e1e4e8;
-            margin-bottom: 10px;
-        }
-    
-        .comment-box .avatar {
-            background-color: #bbb;
-            width: 32px;
-            height: 32px;
-            font-size: 14px;
-            color: white;
-        }
-    
-        .comment-details {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-    
-        .comment-user {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-    
-        .comment-text {
-            font-size: 14px;
-            color: #333;
-            margin-bottom: 5px;
-        }
-    
-        .add-comment {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            background-color: #f6f8fa;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #e1e4e8;
-        }
-    
-        textarea {
-            width: 100%;
-            border-radius: 5px;
-            border: 1px solid #e1e4e8;
-            padding: 10px;
-            resize: none;
-            height: 80px; /* Ajusta el alto del área de texto */
-        }
-    </style>
-    
-    
-    
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
-<body>
-    <div class="task-container">
-        <header>
-            <div class="task-title">
-                <h1>Task Name</h1>
-                <span class="task-number">#taskNumber</span>
-            </div>
-            <div class="task-buttons">
-                <button class="edit-btn">Edit</button>
-                <button class="add-task-btn">Add New Task</button>
-            </div>
-        </header>
-        
-        
-        <div class="task-content">
-            <section class="task-info">
-                <div class="owner-info">
-                    <div class="avatar">Avatar</div>
-                    <div class="owner-details">
-                        <span>TaskOwnerName</span>
-                        <span>Creation Date</span>
+<body class="app">
+    <div class='app'>
+        <main class='project'>
+            <div class="task-section-container">
+                <div class="task-header">
+                    <h1>#Task 123</h1>
+                    <div class="task-actions">
+                        <button class="btn btn-edit"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="btn btn-delete"><i class="fas fa-trash"></i> Delete</button>
                     </div>
                 </div>
-                <div class="task-description">
-                    <p>Task description</p>
+                
+                <div class="task-main-content">
+                    <div class="task-meta">
+                        <div class="task-owner">
+                            <div class="avatar">
+                                <img src="https://ui-avatars.com/api/?name=John+Doe&background=7784ee&color=fff" alt="User Avatar">
+                            </div>
+                            <div class="owner-info">
+                                <span class="owner-name">John Doe</span>
+                                <span class="creation-date">Created: 15/05/2023</span>
+                            </div>
+                        </div>
+                        
+                        <div class="task-details">
+                            <div class="detail-item">
+                                <label>Due Date:</label>
+                                <span class="due-date">25/05/2023</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Priority:</label>
+                                <span class="priority high">High</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Assignee:</label>
+                                <div class="assignee">
+                                    <div class="avatar small">
+                                        <img src="https://ui-avatars.com/api/?name=Sarah+Williams&background=7784ee&color=fff" alt="Assignee Avatar">
+                                    </div>
+                                    <span>Sarah Williams</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="task-description">
+                        <h3>Task Description</h3>
+                        <p>This is a detailed description of the task that needs to be completed. It includes all the necessary information about what needs to be done, any specific requirements, and other relevant details.</p>
+                        
+                        <div class="comments-section">
+                            <h4>Comments</h4>
+                            <div class="comment">
+                                <div class="comment-avatar">
+                                    <img src="https://ui-avatars.com/api/?name=Mike+Johnson&background=fba63c&color=fff" alt="Commenter Avatar">
+                                </div>
+                                <div class="comment-content">
+                                    <div class="comment-header">
+                                        <span class="comment-author">Mike Johnson</span>
+                                        <span class="comment-date">16/05/2023 14:30</span>
+                                    </div>
+                                    <p class="comment-text">I've started working on this task. Should be done by Wednesday.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="add-comment">
+                                <textarea placeholder="Add a comment..."></textarea>
+                                <button class="btn btn-primary">Post Comment</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </section>
-            
-            <section class="task-details">
-                <div class="detail-item">
-                    <h4>Due Date</h4>
-                    <input type="date">
-                </div>
-                <div class="detail-item">
-                    <h4>Priority</h4>
-                    <select>
-                        <option>Low</option>
-                        <option>Medium</option>
-                        <option>High</option>
-                    </select>
-                </div>
-                <div class="detail-item">
-                    <h4>Assignee</h4>
-                    <div class="avatar">Avatar</div>
-                    <span>Assignee name</span>
-                </div>
-            </section>
-        </div>
-        
-        <section class="comments">
-            <div class="comment-box">
-                <div class="avatar">Avatar</div>
-                <div class="comment-details">
-                    <span class="comment-user">Comment user name</span>
-                    <p class="comment-text">Comment text</p>
+                
+                <div class="task-edit-form" style="display: none;">
+                    <h3>Edit Task</h3>
+                    <form class="task-form">
+                        <div class="form-group">
+                            <label>Task Name</label>
+                            <input type="text" value="#Task 123">
+                        </div>
+                        <div class="form-group">
+                            <label>Due Date</label>
+                            <input type="date" value="2023-05-25">
+                        </div>
+                        <div class="form-group">
+                            <label>Priority</label>
+                            <select>
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high" selected>High</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Assignee</label>
+                            <select name="assignee">
+                                <option value="1">Jane Smith</option>
+                                <option value="2">Mike Johnson</option>
+                                <option value="3" selected>Sarah Williams</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea>This is a detailed description of the task that needs to be completed. It includes all the necessary information about what needs to be done, any specific requirements, and other relevant details.</textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary cancel-edit">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="add-comment">
-                <div class="avatar">Avatar</div>
-                <textarea placeholder="Add a comment"></textarea>
-            </div>
-        </section>
+        </main>
     </div>
+    <script src="/js/taskManager.js" defer></script>
 </body>
 </html>
