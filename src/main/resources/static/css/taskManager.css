@@ -14,7 +14,16 @@
     --tag-4-text:#a734ba;
     --purple:#7784ee;
   }
-  
+.project-form {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: var(--white);
+  border-radius: 8px;
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
   * {
     margin: 0;
     padding: 0;
@@ -52,26 +61,6 @@
   .project-participants {
     display: flex;
     align-items: center;
-  }
-  .project-participants span, .project-participants__add {
-    width: 30px;
-    height: 30px;
-    display: inline-block;
-    background: var(--purple);
-    border-radius: 100rem;
-    margin: 0 0.2rem;
-  }
-  .project-participants__add {
-    background: transparent;
-    border: 1px dashed rgb(150, 150, 150);
-    font-size: 0;
-    cursor: pointer;
-    position: relative;
-  }
-  .project-participants__add:after {
-    content: "+";
-    font-size: 15px;
-    color: rgb(150, 150, 150);
   }
   .project-tasks {
     display: grid;
@@ -344,4 +333,86 @@
     display: block;
     text-align: center;
     margin-top: 1rem;
+}
+
+/* --- Estilos añadidos para la creación de Tasks --- */
+
+.title-container {
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  text-align: center;
+  margin-bottom: 20px; 
+  width: 100%; 
+}
+
+.new-task-button .btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #7784ee;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.new-task-button .btn:hover {
+  background-color: #7784ee;
+}
+
+
+.task-form .form-group {
+  margin-bottom: 15px;
+}
+.task-form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: var(--text);
+}
+.task-form input, .task-form textarea, .task-form select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--light-grey);
+  border-radius: 5px;
+  font-size: 14px;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+.task-form .form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.task-form .btn {
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.task-form .btn-primary {
+  background-color: #7784ee;
+  color: white;
+  border: none;
+}
+
+.task-form .btn-primary:hover {
+  background-color: #7784ee;
+}
+
+.task-form .btn-secondary {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+}
+
+.task-form .btn-secondary:hover {
+  background-color: #5a6268;
 }
