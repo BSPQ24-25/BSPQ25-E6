@@ -416,3 +416,151 @@
 .task-form .btn-secondary:hover {
   background-color: #5a6268;
 }
+
+/* --- Estilos añadidos para el inbox --- */
+
+.inbox-button .btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #6c757d;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.inbox-button .btn:hover {
+  background-color: #5a6268;
+}
+
+.inbox-button .btn i {
+  margin-right: 8px;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  margin-top: 20px; 
+}
+
+.button-group .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}/* Contenedor para centrar las tareas y aplicar fondo */
+.task-container {
+  display: flex;
+  flex-direction: column; /* Asegura que los elementos se apilen verticalmente */
+  justify-content: center; /* Centra verticalmente */
+  align-items: center; /* Centra horizontalmente */
+  background-color: rgba(211, 211, 211, 0.4); /* Gris claro con 40% de opacidad */
+  padding: 20px;
+  border-radius: 8px; /* Bordes redondeados */
+  margin: 20px auto; /* Espaciado alrededor y centrado horizontal */
+  width: 80%; /* Ajusta el ancho del contenedor */
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px; /* Sombra ligera */
+}
+
+/* Ajusta la lista de tareas dentro del contenedor */
+.task-list {
+  width: 100%;
+  text-align: center; /* Centra el texto dentro de la lista */
+}
+
+.task-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.task-list li {
+  margin-bottom: 15px;
+}
+
+.task-container {
+display: flex;
+flex-direction: column;
+align-items: center;
+background-color: rgba(211, 211, 211, 0.4);
+padding: 20px;
+border-radius: 8px;
+margin: 0 auto; 
+width: 50%;
+height: auto;
+box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px;
+position: absolute;
+top: 30%;
+left: 50%;
+transform: translate(-50%, -50%);
+}
+
+.task-list {
+  width: 100%;
+  text-align: center;
+}
+
+.task-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.task-list li {
+  margin-bottom: 15px;
+}
+
+.inbox-task {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: var(--white);
+  border-radius: 5px;
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+  width: 100%;
+}
+/* Contenedor de los botones */
+.task-buttons {
+display: flex;
+gap: 10px; /* Espacio entre los botones */
+margin-right: 15px; /* Espacio entre los botones y el título */
+margin-left: auto; 
+}
+
+/* Botón de completar */
+.btn-complete {
+background-color: #28a745; /* Verde */
+color: white;
+border: none;
+border-radius: 5px;
+padding: 5px 10px;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.btn-complete i {
+font-size: 14px;
+}
+
+/* Botón de eliminar */
+.btn-delete {
+background-color: #dc3545; /* Rojo */
+color: white;
+border: none;
+border-radius: 5px;
+padding: 5px 10px;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.btn-delete i {
+font-size: 14px;
+}

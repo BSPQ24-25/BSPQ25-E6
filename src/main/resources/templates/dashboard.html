@@ -11,13 +11,18 @@
         <main class='project'>
             <div class='project-info'>
                 <h1>Task Manager</h1>
-                <!-- Nuevo botón para añadir tareas -->
-                <div class='new-task-button'>
-                    <a href="http://localhost:8080/newTask" class="btn btn-primary">Add New Task</a>
+                <div class="button-group">
+                    <div class='new-task-button'>
+                        <a href="http://localhost:8080/newTask" class="btn btn-primary">Add New Task</a>
+                    </div>
+                    <div class="inbox-button">
+                        <a href="http://localhost:8080/inbox" class="btn btn-primary">
+                            <i class="fas fa-inbox"></i> Inbox
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class='project-tasks'>
-                <!-- Task Ready Column -->
                 <div class='project-column'>
                     <div class='project-column-heading'>
                         <h2 class='project-column-heading__title'>Task Ready</h2>
