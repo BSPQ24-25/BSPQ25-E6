@@ -1,13 +1,16 @@
-package com.tuequipo.taskmanager.controller;
+package BSPQ25_E6.taskmanager.controller;
+
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class DashboardController {
+public class DashboardController 
+{
 
     @GetMapping("/dashboard")
-    public String showDashboard() {
+    public String showDashboard() 
+    {
         return "dashboard";
     }
 }
