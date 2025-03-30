@@ -91,3 +91,91 @@ inputs.forEach(input => {
     });
 });
   });
+
+// function to handle task search
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('taskSearch');
+  const clearSearch = document.getElementById('clearSearch');
+  const taskColumns = document.querySelectorAll('.project-column');
+  
+  // Create no-results message
+  const noResultsMsg = document.createElement('div');
+  noResultsMsg.className = 'no-results';
+  noResultsMsg.textContent = 'No tasks found';
+  document.querySelector('.project-tasks').prepend(noResultsMsg);
+  noResultsMsg.style.display = 'none';
+
+  searchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      let hasResults = false;
+
+      taskColumns.forEach(column => {
+          const tasks = column.querySelectorAll('.task');
+          let columnHasResults = false;
+
+          tasks.forEach(task => {
+              const taskText = task.textContent.toLowerCase();
+              const isMatch = searchTerm === '' || taskText.includes(searchTerm);
+              
+              // Use visibility+height instead of display to preserve layout
+              task.style.visibility = isMatch ? 'visible' : 'hidden';
+              task.style.height = isMatch ? 'auto' : '0';
+              task.style.margin = isMatch ? '' : '0';
+              
+              if (isMatch) {
+                  columnHasResults = true;
+                  hasResults = true;
+              }
+          });
+
+          // Hide entire column if no matches
+          column.style.display = columnHasResults || searchTerm === '' ? 'block' : 'none';
+      });
+
+      noResultsMsg.style.display = hasResults || searchTerm === '' ? 'none' : 'block';
+  });
+
+  clearSearch.addEventListener('click', function() {
+      searchInput.value = '';
+      searchInput.focus();
+      searchInput.dispatchEvent(new Event('input')); // Trigger search update
+  });
+});
+
+document.addEventListener('keydown', (e) => {
+  // Focus search on Ctrl+K
+  if (e.ctrlKey && e.key === 'k') {
+      e.preventDefault();
+      document.getElementById('taskSearch').focus();
+  }
+});
+
+// Function to handle task progress
+document.addEventListener('DOMContentLoaded', () => {
+  const overallProgress = document.getElementById('overallProgress');
+  const overallProgressBar = document.getElementById('overallProgressBar');
+
+  let totalTasks = 0;
+  let completedTasks = 0;
+
+  // Select all tasks
+  const allTasks = document.querySelectorAll('.task');
+
+  // Iterate through each task to calculate totals
+  allTasks.forEach(task => {
+      totalTasks++; // Count every task as part of the total
+
+      // Check if the task is in the "Done" column
+      const parentColumn = task.closest('.project-column');
+      if (parentColumn && parentColumn.querySelector('.project-column-heading__title').textContent.trim() === 'Done') {
+          completedTasks++; // Count only tasks in the "Done" column as completed
+      }
+  });
+
+  // Calculate the percentage
+  const percentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+  // Update the UI
+  overallProgress.textContent = `${percentage}%`;
+  overallProgressBar.value = percentage;
+});
