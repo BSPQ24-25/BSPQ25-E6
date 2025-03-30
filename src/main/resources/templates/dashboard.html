@@ -22,6 +22,23 @@
                     </div>
                 </div>
             </div>
+            <div class="search-container">
+              <div class="search-box">
+                  <input 
+                      type="text" 
+                      id="taskSearch" 
+                      placeholder="Search tasks..." 
+                      aria-label="Search tasks"
+                      class="search-input"
+                  >
+                  <button class="search-clear" id="clearSearch" aria-label="Clear search">
+                      <i class="fas fa-times"></i>
+                  </button>
+                  <span class="search-icon">
+                      <i class="fas fa-search"></i>
+                  </span>
+              </div>
+            </div>
             <div class='project-tasks'>
                 <div class='project-column'>
                     <div class='project-column-heading'>
@@ -41,7 +58,17 @@
                         </div>
                     </div>
                     <!-- Puedes añadir más tareas aquí -->
+                     <div class="task-actions">
+                     </div>
                 </div>
+                
+                <div id="overallProgressContainer" class="overall-progress">
+                  <h2>Overall Progress</h2>
+                  <p>Completed: <span id="overallProgress">0%</span></p>
+                  <progress id="overallProgressBar" max="100" value="0"></progress>
+              </div>
+
+
 
                 <!-- In Progress Column -->
                 <div class='project-column'>
@@ -61,6 +88,19 @@
                             <span class='task__owner'></span>
                         </div>
                     </div>
+                    <div class='task' draggable='true'>
+                      <div class='task__tags'>
+                          <span class='task__tag task__tag--design'>UI Design</span>
+                          <button class='task__options'><i class="fas fa-ellipsis-h"></i></button>
+                      </div>
+                      <p>Redesign Contact Page</p>
+                      <div class='task__stats'>
+                          <span><time datetime="2021-11-25T20:00:00"><i class="fas fa-flag"></i>Nov 25</time></span>
+                          <span><i class="fas fa-comment"></i>2</span>
+                          <span><i class="fas fa-paperclip"></i>1</span>
+                          <span class='task__owner'>John Doe</span>
+                      </div>
+                  </div>
                 </div>
 
                 <!-- Needs Review Column -->
@@ -101,6 +141,19 @@
                             <span class='task__owner'></span>
                         </div>
                     </div>
+                    <div class='task' draggable='true'>
+                      <div class='task__tags'>
+                          <span class='task__tag task__tag--design'>UI Design</span>
+                          <button class='task__options'><i class="fas fa-ellipsis-h"></i></button>
+                      </div>
+                      <p>Redesign Contact Page</p>
+                      <div class='task__stats'>
+                          <span><time datetime="2021-11-25T20:00:00"><i class="fas fa-flag"></i>Nov 25</time></span>
+                          <span><i class="fas fa-comment"></i>2</span>
+                          <span><i class="fas fa-paperclip"></i>1</span>
+                          <span class='task__owner'>John Doe</span>
+                      </div>
+                  </div>
                 </div>
             </div>
         </main>
