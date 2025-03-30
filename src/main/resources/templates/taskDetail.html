@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Details</title>
+    <link rel="stylesheet" href="/css/taskManager.css">
+    <style>
+        body {
+            background-color: #d6c5f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        .task-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+            width: 600px;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .edit-btn, .add-task-btn {
+            background-color: #9085e6;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .task-info {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .owner-info, .assignee, .comment-box, .add-comment {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #b3f0ff;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .avatar {
+            background-color: #85d3f2;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+        .task-description {
+            border: 2px solid #b3b3b3;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .task-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .due-date, .priority {
+            background-color: #b3f0ff;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .comments {
+            margin-top: 10px;
+        }
+        .comment-box, .add-comment {
+            margin-top: 5px;
+        }
+        textarea {
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #b3b3b3;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="task-container">
+        <header>
+            <h1><strong>Task name</strong> #taskNumber</h1>
+            <button class="edit-btn">Edit</button>
+            <button class="add-task-btn">Add New Task</button>
+        </header>
+        
+        <section class="task-info">
+            <div class="owner-info">
+                <div class="avatar">Avatar</div>
+                <div class="owner-details">
+                    <span>TaskOwnerName</span>
+                    <span>Creation Date</span>
+                </div>
+            </div>
+            
+            <div class="task-description">
+                <p>Task description</p>
+            </div>
+        </section>
+        
+        <section class="task-details">
+            <div class="due-date">
+                <h4>Due Date</h4>
+                <input type="date">
+            </div>
+            <div class="priority">
+                <h4>Priority</h4>
+                <select>
+                    <option>Low</option>
+                    <option>Medium</option>
+                    <option>High</option>
+                </select>
+            </div>
+            <div class="assignee">
+                <div class="avatar">Avatar</div>
+                <span>Assignee name</span>
+            </div>
+        </section>
+        
+        <section class="comments">
+            <div class="comment-box">
+                <div class="avatar">Avatar</div>
+                <div class="comment-details">
+                    <span class="comment-user">Comment user name</span>
+                    <p class="comment-text">Comment text</p>
+                </div>
+            </div>
+            <div class="add-comment">
+                <div class="avatar">Avatar</div>
+                <textarea placeholder="Add a comment"></textarea>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
