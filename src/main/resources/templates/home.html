@@ -1,20 +1,65 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Home</title>
+    <title>Home | TaskManager</title>
     <link rel="stylesheet" href="/css/taskManager.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body class="app">
+<body class="app home-page">
     <div class="app">
         <main class="project">
-            <div class="title-container">
-                <h1>Welcome to Task Manager</h1>
+            <div class="header">
+                <div class="circle-decoration circle-1"></div>
+                <div class="circle-decoration circle-2"></div>
+                <div class="circle-decoration circle-3"></div>
+                <div class="circle-decoration circle-4"></div>
+                <div class="circle-decoration circle-5"></div>
+                
+                <div class="app-logo">
+                    <span class="app-icon"><i class="fas fa-tasks"></i></span>TaskManager
+                </div>
+                
+                <h1>Organize your life with us</h1>
+                <p class="tagline">Simple. Efficient. Productive.</p>
             </div>
-            <div class="button-group home-button-group">
-                <a href="/dashboard" class="btn btn-primary">Go to Dashboard</a>
-                <a href="/newTask" class="btn btn-secondary">Create New Task</a>
-                <a href="/inbox" class="btn btn-secondary">View Inbox</a>
+            
+            <!-- Feature cards with icons and titles -->
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <a href="/dashboard" class="feature-link">
+                        <div class="feature-icon dashboard-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="feature-title">Dashboard</div>
+                        <div class="feature-description">View all your tasks and projects in one place</div>
+                    </a>
+                </div>
+                
+                <div class="feature-card">
+                    <a href="/newTask" class="feature-link">
+                        <div class="feature-icon new-task-icon">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <div class="feature-title">New task</div>
+                        <div class="feature-description">Create and organize new tasks quickly</div>
+                    </a>
+                </div>
+                
+                <div class="feature-card">
+                    <a href="/inbox" class="feature-link">
+                        <div class="feature-icon inbox-icon">
+                            <i class="fas fa-inbox"></i>
+                        </div>
+                        <div class="feature-title">Inbox</div>
+                        <div class="feature-description">Check your notifications and pending tasks</div>
+                    </a>
+                </div>
             </div>
+            
+            <footer class="footer">
+                <p>© 2025 TaskManager. All rights reserved.</p>
+            </footer>
         </main>
     </div>
 </body>
