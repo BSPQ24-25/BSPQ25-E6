@@ -1167,4 +1167,25 @@ body {
   .home-page .feature-grid {
     grid-template-columns: 1fr;
   }
+  
+}
+.auth-buttons {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+}
+
+.auth-buttons a {
+  background-color: var(--purple, #6c63ff);
+  color: white;
+  padding: 0.5rem 1rem;
+  margin-left: 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.auth-buttons a:hover {
+  background-color: #574fd3;
 }
