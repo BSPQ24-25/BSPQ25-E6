@@ -451,24 +451,23 @@
   align-items: center;
   justify-content: center;
   gap: 5px;
-}/* Contenedor para centrar las tareas y aplicar fondo */
+}
 .task-container {
   display: flex;
-  flex-direction: column; /* Asegura que los elementos se apilen verticalmente */
-  justify-content: center; /* Centra verticalmente */
-  align-items: center; /* Centra horizontalmente */
-  background-color: rgba(211, 211, 211, 0.4); /* Gris claro con 40% de opacidad */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(211, 211, 211, 0.4);
   padding: 20px;
-  border-radius: 8px; /* Bordes redondeados */
-  margin: 20px auto; /* Espaciado alrededor y centrado horizontal */
-  width: 80%; /* Ajusta el ancho del contenedor */
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px; /* Sombra ligera */
+  border-radius: 8px;
+  margin: 20px auto;
+  width: 80%;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px;
 }
 
-/* Ajusta la lista de tareas dentro del contenedor */
 .task-list {
   width: 100%;
-  text-align: center; /* Centra el texto dentro de la lista */
+  text-align: center;
 }
 
 .task-list ul {
@@ -526,14 +525,14 @@ transform: translate(-50%, -50%);
 /* Contenedor de los botones */
 .task-buttons {
 display: flex;
-gap: 10px; /* Espacio entre los botones */
-margin-right: 15px; /* Espacio entre los botones y el título */
+gap: 10px; 
+margin-right: 15px;
 margin-left: auto; 
 }
 
 /* Botón de completar */
 .btn-complete {
-background-color: #28a745; /* Verde */
+background-color: #28a745;
 color: white;
 border: none;
 border-radius: 5px;
@@ -550,7 +549,7 @@ font-size: 14px;
 
 /* Botón de eliminar */
 .btn-delete {
-background-color: #dc3545; /* Rojo */
+background-color: #dc3545;
 color: white;
 border: none;
 border-radius: 5px;
@@ -616,7 +615,7 @@ font-size: 14px;
   opacity: 1;
 }
 
-/* Animation for no results */
+
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   20%, 60% { transform: translateX(-5px); }
@@ -952,4 +951,11 @@ font-size: 14px;
         width: 100%;
         justify-content: flex-end;
     }
+}
+/* --- Estilos añadidos para el home --- */
+.home-button-group {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
 }
