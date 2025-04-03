@@ -12,21 +12,32 @@
                 <h1>Create a New Task</h1>
             </div>
 			<div class="auth-container">
-			        <h2>New Task</h2>
-			        <form method="post" action="/newTask">
-			            <input type="title" name="title" placeholder="Title" required />
-			            <input type="description" name="description" placeholder="Description" required />
-						<input type="date" id="taskDueDate" name="dueDate" required>
+			    <h2>New Task</h2>
+			    <form method="post" action="/newTask">
+			        <input type="text" name="title" placeholder="Title" required />
+			        <input type="text" name="description" placeholder="Description" required />
+					<label for="taskDueDate">Due Date:</label>
 
-			            <button type="submit">Save</button>
-						<a href="/" class="btn btn-secondary">Cancel</a>
-			        </form>
-			        <p th:text="${error}"></p>
-			        <p th:text="${success}"></p>
-			    </div>
+			        <input type="date" id="taskDueDate" name="dueDate" placeholder = "Due Date"required />
+					<!-- Dropdown for assigning the task to a user -->
+					<label for="assigneeID">Assign Task To:</label>
+					<select id="assigneeID" name="assigneeID" required>
+					    <option value="" disabled selected>Select a user</option>
+					    <!-- Loop through users and display them -->
+					    <option th:each="user : ${users}" 
+					            th:value="${user.id}" 
+					            th:text="${user.username}"></option>
+					</select>
+					<label for="assigneeID">"${user.id}"</label>
 
 
-            </div>
+			        <button type="submit">Save</button>
+			        <a href="/" class="btn btn-secondary">Cancel</a>
+			    </form>
+			    <p th:text="${error}"></p>
+			    <p th:text="${success}"></p>
+			</div>
+
         </main>
     </div>
 </body>

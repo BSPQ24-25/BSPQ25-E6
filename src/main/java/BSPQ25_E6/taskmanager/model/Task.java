@@ -2,6 +2,7 @@ package BSPQ25_E6.taskmanager.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
 
 @Entity
@@ -14,16 +15,21 @@ public class Task {
 
     private String title;
     private String description;
+    private int progress;
     private boolean completed;
-    private LocalDateTime createdAt;
+    private LocalDateTime dueDate;
+    private LocalDateTime creationDate;
     
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false) // Relación con User
     private User user;
-
+    
+    @ManyToOne
+    @JoinColumn(name = "asignee",nullable = false)
+    private User assignee;
+    
     public Task() {
-        this.createdAt = LocalDateTime.now();
     }
     
     // Getters y Setters
@@ -39,10 +45,40 @@ public class Task {
     public boolean isCompleted() { return completed; }
     public void setCompleted(boolean completed) { this.completed = completed; }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
+
+	public LocalDateTime getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(LocalDateTime dueDate) {
+		this.dueDate = dueDate;
+	}
+
+	public int getProgress() {
+		return progress;
+	}
+
+	public void setProgress(int progress) {
+		this.progress = progress;
+	}
+
+	public LocalDateTime getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(LocalDateTime creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public User getAssignee() {
+		return assignee;
+	}
+
+	public void setAssignee(User assignee) {
+		this.assignee = assignee;
+	}
 
 }
