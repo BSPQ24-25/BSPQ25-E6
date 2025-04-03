@@ -2,6 +2,7 @@ package BSPQ25_E6.taskmanager.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Entity
 @Table(name = "task")
@@ -24,7 +25,7 @@ public class Task {
     public Task() {
         this.createdAt = LocalDateTime.now();
     }
-
+    
     // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -43,4 +44,5 @@ public class Task {
 
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
+
 }

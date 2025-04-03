@@ -3,6 +3,8 @@ package BSPQ25_E6.taskmanager.controller;
 import BSPQ25_E6.taskmanager.model.User;
 import java.util.Optional;
 import BSPQ25_E6.taskmanager.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
+
 import org.apache.logging.log4j.CloseableThreadContext.Instance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,14 +31,14 @@ public class AuthController
     @PostMapping("/login")
     public String loginUser(@RequestParam String email,
                             @RequestParam String password,
-                            Model model
+                            Model model, HttpSession session
                            ) {
         Optional<User> userOpt = userRepository.findByEmail(email);
         if (userOpt.isPresent()) {
             User user = userOpt.get();
             if (password.equals(user.getPassword())) {
             	
-                
+            	session.setAttribute("user", user);
                 return "redirect:/dashboard";
             }
         }
@@ -72,8 +74,8 @@ public class AuthController
     
     }
     @GetMapping("/logout")
-    public String logout( ) {
-        
+    public String logout( HttpSession session) {
+    	session.invalidate();
         return "redirect:/login"; 
     }
 
