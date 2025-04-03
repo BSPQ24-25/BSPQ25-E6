@@ -1,8 +1,8 @@
 package BSPQ25_E6.taskmanager.controller;
-import BSPQ25_E6.taskmanager.model.User;
-import BSPQ25_E6.taskmanager.repository.UserRepository;
-import java.util.Optional;
 
+import BSPQ25_E6.taskmanager.model.User;
+import java.util.Optional;
+import BSPQ25_E6.taskmanager.repository.UserRepository;
 import org.apache.logging.log4j.CloseableThreadContext.Instance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -73,7 +73,7 @@ public class AuthController
     }
     @GetMapping("/logout")
     public String logout( ) {
-        userSession.setLoggedUser(null); 
+        
         return "redirect:/login"; 
     }
 
