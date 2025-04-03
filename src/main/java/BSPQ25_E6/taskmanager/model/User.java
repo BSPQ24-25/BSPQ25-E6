@@ -1,11 +1,26 @@
 package BSPQ25_E6.taskmanager.model;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+@Entity
+@Table(name = "app_user")
 public class User 
     {
-
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-generate the ID
+    private Long id;
     private String username;
     private String email;
     private String password;
+
 
     public User() 
     {
@@ -43,6 +58,7 @@ public class User
         return password;
     }
 
+   
     public void setPassword(String password) 
     {
         this.password = password;
