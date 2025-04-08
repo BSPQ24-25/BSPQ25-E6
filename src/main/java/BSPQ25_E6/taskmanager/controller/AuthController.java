@@ -5,7 +5,6 @@ import java.util.Optional;
 import BSPQ25_E6.taskmanager.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 
-import org.apache.logging.log4j.CloseableThreadContext.Instance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

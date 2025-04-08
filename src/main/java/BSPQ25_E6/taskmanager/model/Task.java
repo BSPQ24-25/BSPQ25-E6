@@ -2,8 +2,6 @@ package BSPQ25_E6.taskmanager.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Optional;
 
 @Entity
 @Table(name = "task")

@@ -2,14 +2,9 @@ package BSPQ25_E6.taskmanager.model;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
-import java.util.List;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 @Entity
 @Table(name = "app_user")
 public class User 
