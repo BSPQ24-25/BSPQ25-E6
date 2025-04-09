@@ -18,35 +18,38 @@ public class DataLoader {
     @Bean
     public CommandLineRunner loadData(UserRepository userRepository, TaskRepository taskRepository) {
         return args -> {
+        	if ((userRepository.count()==0)&&(taskRepository.count()==0)) {
+        		// Crear 10 usuarios
+                for (int i = 1; i <= 10; i++) {
+                    User user = new User("user" + i, "user" + i + "@mail.com", "password" + i);
+                    userRepository.save(user);
+                }
 
-            // Crear 10 usuarios
-            for (int i = 1; i <= 10; i++) {
-                User user = new User("user" + i, "user" + i + "@mail.com", "password" + i);
-                userRepository.save(user);
+                var users = userRepository.findAll();
+                Random random = new Random();
+
+                // Crear 10 tareas
+                for (int i = 1; i <= 10; i++) {
+                    Task task = new Task();
+                    task.setTitle("Tarea " + i);
+                    task.setDescription("Descripción de la tarea " + i);
+                    task.setProgress(random.nextInt(101)); // 0-100
+                    task.setCompleted(random.nextBoolean());
+                    task.setCreationDate(LocalDateTime.now());
+                    task.setDueDate(LocalDateTime.now().plusDays(random.nextInt(10) + 1));
+
+                    User creator = users.get(random.nextInt(users.size()));
+                    User assignee = users.get(random.nextInt(users.size()));
+                    task.setUser(creator);
+                    task.setAssignee(assignee);
+
+                    taskRepository.save(task);
+                }
+
+                System.out.println("Datos de prueba insertados correctamente.");
             }
-
-            var users = userRepository.findAll();
-            Random random = new Random();
-
-            // Crear 10 tareas
-            for (int i = 1; i <= 10; i++) {
-                Task task = new Task();
-                task.setTitle("Tarea " + i);
-                task.setDescription("Descripción de la tarea " + i);
-                task.setProgress(random.nextInt(101)); // 0-100
-                task.setCompleted(random.nextBoolean());
-                task.setCreationDate(LocalDateTime.now());
-                task.setDueDate(LocalDateTime.now().plusDays(random.nextInt(10) + 1));
-
-                User creator = users.get(random.nextInt(users.size()));
-                User assignee = users.get(random.nextInt(users.size()));
-                task.setUser(creator);
-                task.setAssignee(assignee);
-
-                taskRepository.save(task);
-            }
-
-            System.out.println("Datos de prueba insertados correctamente.");
-        };
+        	
+       };
+    
     }
 }

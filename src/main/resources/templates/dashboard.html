@@ -53,7 +53,7 @@
 					            <div th:each="task : ${tasks}" class="task">
 					                <h3 th:text="${task.title}">Task Title</h3>
 					                <p th:text="${task.description}">Task description...</p>
-									<span><time datetime="2021-11-25T20:00:00"><i class="fas fa-flag"></i></time>Due Date</span>
+									<span><time datetime="2021-11-25T20:00:00"><i class="fas fa-flag"></i></time></span>
 									<p th:text="${task.assignee.id}">Assigned To</p>
 									
 

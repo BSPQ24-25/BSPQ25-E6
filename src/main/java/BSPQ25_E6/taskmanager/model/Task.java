@@ -19,11 +19,11 @@ public class Task {
     private LocalDateTime creationDate;
     
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id", nullable = false) // Relación con User
     private User user;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "asignee",nullable = false)
     private User assignee;
     
