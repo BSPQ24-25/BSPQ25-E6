@@ -37,8 +37,8 @@ public class DataLoader {
                 	category.setName("Category"+i);
                 	categoryRepository.save(category);
                     Task task = new Task();
-                    task.setTitle("Tarea " + i);
-                    task.setDescription("Descripción de la tarea " + i);
+                    task.setTitle("Task " + i);
+                    task.setDescription("Description of task " + i);
                     task.setProgress(random.nextInt(101)); // 0-100
                     task.setCompleted(random.nextBoolean());
                     task.setCreationDate(LocalDateTime.now());
@@ -54,7 +54,7 @@ public class DataLoader {
                 
                 
 
-                System.out.println("Datos de prueba insertados correctamente.");
+                System.out.println("Sample data inserted correctly.");
             }
         	
        };

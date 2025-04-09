@@ -50,18 +50,16 @@ public class NewTaskController {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return "redirect:/login";
-        }// Obtener el usuario de la sesión
+        }
         Category category;
         if (categoryId.contains("new")) {
         	System.out.print("id de cate: "+categoryId);
         	System.out.print("nomvre de cate: "+ newCategory);
 
-            // Crear nueva categoría si se escribió
             category = new Category();
             category.setName(newCategory);
             categoryRepository.save(category);
         } else {
-            // Usar categoría existente
         	System.out.print("id de cate: "+categoryId);
         	Long idCat = Long.parseLong(categoryId);
         	System.out.print(idCat+"========");
