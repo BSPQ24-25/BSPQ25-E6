@@ -12,16 +12,6 @@ import BSPQ25_E6.taskmanager.model.Task;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long>{
 
-	@Override
-	default Optional<Category> findById(Long id) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
-	}
-
-	@Override
-	default Category getById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	
 }

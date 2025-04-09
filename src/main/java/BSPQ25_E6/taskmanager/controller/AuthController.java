@@ -36,7 +36,7 @@ public class AuthController
         if (userOpt.isPresent()) {
             User user = userOpt.get();
             if (password.equals(user.getPassword())) {
-            	
+            	System.out.print("Logged in User: "+user.getEmail());
             	session.setAttribute("user", user);
                 return "redirect:/dashboard";
             }

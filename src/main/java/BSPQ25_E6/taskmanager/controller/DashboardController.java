@@ -1,6 +1,7 @@
 package BSPQ25_E6.taskmanager.controller;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +26,35 @@ public class DashboardController
 	    User user = (User) session.getAttribute("user");
 	    
 	    if (user == null) {
-	        return "redirect:/login"; // Redirigir si no hay usuario logeado
+	        return "redirect:/login"; 
 	    }
 
 	    // Obtener las tareas asociadas al usuario
-	    List<Task> tasks = taskRepository.findByUser(user); // Asumiendo que tienes un método en el repositorio para esto
-	    // Pasar las tareas a la vista
-	    model.addAttribute("tasks", tasks);
-	    return "dashboard"; // Nombre de la plantilla Thymeleaf (puede ser dashboard.html)
+	    List<Task> tasks = taskRepository.findAll();
+	    List<Task> userTasks = new ArrayList<Task>();
+	    List<Task> doneTasks = new ArrayList<Task>();
+	    List<Task> myTasks = new ArrayList<Task>();
+	   
+	    for (Task task: tasks) {
+	    	if (task.getUser().getId()==user.getId()) {
+	    		userTasks.add(task);
+		    	if (task.getProgress()==100) {
+		    		doneTasks.add(task);
+		    		userTasks.remove(task);
+		    		myTasks.remove(task);
+		    	}
+
+	    	}
+	    	if (task.getAssignee().getId()==user.getId()) {
+	    		System.out.print("Task added"+task.getTitle());
+	    		myTasks.add(task);
+	    	}
+	    	
+	    }
+	    model.addAttribute("myTasks",myTasks);
+	    model.addAttribute("doneTasks",doneTasks);
+	    model.addAttribute("userTasks", userTasks);
+	    return "dashboard"; 
 	}
 
 }

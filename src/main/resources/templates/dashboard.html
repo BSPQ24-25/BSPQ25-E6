@@ -45,17 +45,22 @@
             <div class='project-tasks'>
                 <div class='project-column'>
                     <div class='project-column-heading'>
-                        <h2 class='project-column-heading__title'>Task Ready</h2>
+                        <h2 class='project-column-heading__title'>Created Tasks</h2>
                         <button class='project-column-heading__options'><i class="fas fa-ellipsis-h"></i></button>
                     </div>
-					<h2>My Tasks</h2>
 					        <div class="tasks">
-					            <div th:each="task : ${tasks}" class="task">
+					            <div th:each="task : ${userTasks}" class="task">
 					                <h3 th:text="${task.title}">Task Title</h3>
 					                <p th:text="${task.description}">Task description...</p>
-									<span><time datetime="2021-11-25T20:00:00"><i class="fas fa-flag"></i></time></span>
-									<p th:text="${task.assignee.id}">Assigned To</p>
-									
+                                    <p th:text="'Progress: '+${task.progress}+'%'"style="font-size: 12px; color: #6c757d;">Progress</p>
+									<span><time th:datetime="${#temporals.format(task.dueDate, 'yyyy-MM-dd')}"
+                                        th:text="'Deadline: '+${#temporals.format(task.dueDate, 'dd MMM yyyy')}"style="font-size: 12px; color: #6c757d;">
+                                    <i class="fas fa-flag"></i>
+                                  </time></span>
+									<p th:text="'Assigned to: '+ ${task.assignee.username}"style="font-size: 12px; color: #6c757d;">Assigned To</p>
+                                    <p th:text="'Created by: '+ ${task.user.username}"style="font-size: 12px; color: #6c757d;">Created By</p>
+                                    <p th:text="'Category: '+ ${task.category.name}"style="font-size: 12px; color: #6c757d;">Created By</p>
+
 
 
 					            </div>
@@ -73,55 +78,34 @@
 
 
 
-                <!-- In Progress Column -->
                 <div class='project-column'>
                     <div class='project-column-heading'>
                         <h2 class='project-column-heading__title'>In Progress</h2>
                         <button class='project-column-heading__options'><i class="fas fa-ellipsis-h"></i></button>
                     </div>
-                    <div class='task' draggable='true'>
-                        <div class='task__tags'><span class='task__tag task__tag--design'>UI Design</span>
-                            <button class='task__options'><i class="fas fa-ellipsis-h"></i></button>
-                        </div>
-                        <p>Update service icons</p>
-                        <div class='task__stats'>
-                            <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
-                            <span><i class="fas fa-comment"></i>2</span>
-                            <span><i class="fas fa-paperclip"></i>5</span>
-                            <span class='task__owner'></span>
-                        </div>
-                    </div>
-                    <div class='task' draggable='true'>
-                      <div class='task__tags'>
-                          <span class='task__tag task__tag--design'>UI Design</span>
-                          <button class='task__options'><i class="fas fa-ellipsis-h"></i></button>
-                      </div>
-                      <p>Redesign Contact Page</p>
-                      <div class='task__stats'>
-                          <span><time datetime="2021-11-25T20:00:00"><i class="fas fa-flag"></i>Nov 25</time></span>
-                          <span><i class="fas fa-comment"></i>2</span>
-                          <span><i class="fas fa-paperclip"></i>1</span>
-                          <span class='task__owner'>John Doe</span>
-                      </div>
-                  </div>
+                    
                 </div>
 
-                <!-- Needs Review Column -->
                 <div class='project-column'>
                     <div class='project-column-heading'>
-                        <h2 class='project-column-heading__title'>Needs Review</h2>
+                        <h2 class='project-column-heading__title'>Assigned to you</h2>
                         <button class='project-column-heading__options'><i class="fas fa-ellipsis-h"></i></button>
                     </div>
-                    <div class='task' draggable='true'>
-                        <div class='task__tags'><span class='task__tag task__tag--illustration'>Illustration</span>
-                            <button class='task__options'><i class="fas fa-ellipsis-h"></i></button>
-                        </div>
-                        <p>Check illustration placements</p>
-                        <div class='task__stats'>
-                            <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
-                            <span><i class="fas fa-comment"></i>1</span>
-                            <span><i class="fas fa-paperclip"></i>3</span>
-                            <span class='task__owner'></span>
+                    <div class="tasks">
+                        <div th:each="task : ${myTasks}" class="task">
+                            <h3 th:text="${task.title}">Task Title</h3>
+                            <p th:text="${task.description}">Task description...</p>
+                            <p th:text="'Progress: '+${task.progress}+'%'"style="font-size: 12px; color: #6c757d;">Progress</p>
+                            <span><time th:datetime="${#temporals.format(task.dueDate, 'yyyy-MM-dd')}"
+                                th:text="'Deadline: '+${#temporals.format(task.dueDate, 'dd MMM yyyy')}"style="font-size: 12px; color: #6c757d;">
+                            <i class="fas fa-flag"></i>
+                          </time></span>
+                            <p th:text="'Assigned to: '+ ${task.assignee.username}"style="font-size: 12px; color: #6c757d;">Assigned To</p>
+                            <p th:text="'Created by: '+ ${task.user.username}"style="font-size: 12px; color: #6c757d;">Created By</p>
+                            <p th:text="'Category: '+ ${task.category.name}"style="font-size: 12px; color: #6c757d;">Created By</p>
+
+
+
                         </div>
                     </div>
                 </div>
@@ -132,30 +116,23 @@
                         <h2 class='project-column-heading__title'>Done</h2>
                         <button class='project-column-heading__options'><i class="fas fa-ellipsis-h"></i></button>
                     </div>
-                    <div class='task' draggable='true'>
-                        <div class='task__tags'><span class='task__tag task__tag--design'>UI Design</span>
-                            <button class='task__options'><i class="fas fa-ellipsis-h"></i></button>
-                        </div>
-                        <p>Finalize About Page</p>
-                        <div class='task__stats'>
-                            <span><time datetime="2021-11-24T20:00:00"><i class="fas fa-flag"></i>Nov 24</time></span>
-                            <span><i class="fas fa-comment"></i>0</span>
-                            <span><i class="fas fa-paperclip"></i>4</span>
-                            <span class='task__owner'></span>
+                    <div class="tasks">
+                        <div th:each="task : ${doneTasks}" class="task">
+                            <h3 th:text="${task.title}">Task Title</h3>
+                            <p th:text="${task.description}">Task description...</p>
+                            <p th:text="'Progress: '+${task.progress}+'%'"style="font-size: 12px; color: #6c757d;">Progress</p>
+                            <span><time th:datetime="${#temporals.format(task.dueDate, 'yyyy-MM-dd')}"
+                                th:text="'Deadline: '+${#temporals.format(task.dueDate, 'dd MMM yyyy')}"style="font-size: 12px; color: #6c757d;">
+                            <i class="fas fa-flag"></i>
+                          </time></span>
+                            <p th:text="'Assigned to: '+ ${task.assignee.username}"style="font-size: 12px; color: #6c757d;">Assigned To</p>
+                            <p th:text="'Created by: '+ ${task.user.username}"style="font-size: 12px; color: #6c757d;">Created By</p>
+                            <p th:text="'Category: '+ ${task.category.name}"style="font-size: 12px; color: #6c757d;">Created By</p>
+
+
+
                         </div>
                     </div>
-                    <div class='task' draggable='true'>
-                      <div class='task__tags'>
-                          <span class='task__tag task__tag--design'>UI Design</span>
-                          <button class='task__options'><i class="fas fa-ellipsis-h"></i></button>
-                      </div>
-                      <p>Redesign Contact Page</p>
-                      <div class='task__stats'>
-                          <span><time datetime="2021-11-25T20:00:00"><i class="fas fa-flag"></i>Nov 25</time></span>
-                          <span><i class="fas fa-comment"></i>2</span>
-                          <span><i class="fas fa-paperclip"></i>1</span>
-                          <span class='task__owner'>John Doe</span>
-                      </div>
                   </div>
                 </div>
             </div>

@@ -30,15 +30,12 @@ public class DataLoader {
 
                 var users = userRepository.findAll();
                 Random random = new Random();
+               
                 
-                for (int i=0; i<=10; i++) {
+                for (int i = 1; i <= 10; i++) {
                 	Category category = new Category();
                 	category.setName("Category"+i);
                 	categoryRepository.save(category);
-                }
-                
-                // Crear 10 tareas
-                for (int i = 1; i <= 10; i++) {
                     Task task = new Task();
                     task.setTitle("Tarea " + i);
                     task.setDescription("Descripción de la tarea " + i);
@@ -46,7 +43,7 @@ public class DataLoader {
                     task.setCompleted(random.nextBoolean());
                     task.setCreationDate(LocalDateTime.now());
                     task.setDueDate(LocalDateTime.now().plusDays(random.nextInt(10) + 1));
-
+                    task.setCategory(category);
                     User creator = users.get(random.nextInt(users.size()));
                     User assignee = users.get(random.nextInt(users.size()));
                     task.setUser(creator);

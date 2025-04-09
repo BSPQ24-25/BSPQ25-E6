@@ -27,7 +27,7 @@ public class Task {
     @JoinColumn(name = "asignee",nullable = false)
     private User assignee;
     
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne()
     @JoinColumn(name = "category",nullable=false)
     private Category category;
     public Task() {

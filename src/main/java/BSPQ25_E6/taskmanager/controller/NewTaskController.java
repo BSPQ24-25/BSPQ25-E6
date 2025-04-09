@@ -45,19 +45,28 @@ public class NewTaskController {
     @PostMapping("/newTask")
     public String registerTask(@RequestParam String title, @RequestParam String description,@RequestParam String dueDate, @RequestParam("assigneeID") Long assigneeID,  @RequestParam String categoryId,@RequestParam(required = false) String newCategory,HttpSession session) {
     	Task task = new Task();
+    	System.out.print("id de cate: "+categoryId);
+    	System.out.print("nomvre de cate: "+ newCategory);
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return "redirect:/login";
         }// Obtener el usuario de la sesión
         Category category;
-        if ("new".equals(categoryId != null ? categoryId.toString() : "") || (categoryId == null && newCategory != null && !newCategory.isBlank())) {
+        if (categoryId.contains("new")) {
+        	System.out.print("id de cate: "+categoryId);
+        	System.out.print("nomvre de cate: "+ newCategory);
+
             // Crear nueva categoría si se escribió
             category = new Category();
             category.setName(newCategory);
             categoryRepository.save(category);
         } else {
             // Usar categoría existente
-            category = (Category) categoryRepository.findById(Long.parseLong(categoryId)).orElse(null);
+        	System.out.print("id de cate: "+categoryId);
+        	Long idCat = Long.parseLong(categoryId);
+        	System.out.print(idCat+"========");
+            category = (Category) categoryRepository.findById(idCat).orElse(null);
+
         }
         
         LocalDateTime taskDate = LocalDateTime.parse(dueDate + "T00:00:00");
