@@ -8,11 +8,13 @@ import BSPQ25_E6.taskmanager.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Random;
 
 @Configuration
+@Transactional
 public class DataLoader {
 
     @Bean
