@@ -27,6 +27,9 @@ public class Task {
     @JoinColumn(name = "asignee",nullable = false)
     private User assignee;
     
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "category",nullable=false)
+    private Category category;
     public Task() {
     }
     
@@ -77,6 +80,14 @@ public class Task {
 
 	public void setAssignee(User assignee) {
 		this.assignee = assignee;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 }

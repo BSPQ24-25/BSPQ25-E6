@@ -14,26 +14,36 @@
 			<div class="auth-container">
 			    <h2>New Task</h2>
 			    <form method="post" action="/newTask">
-			        <input type="text" name="title" placeholder="Title" required />
-			        <input type="text" name="description" placeholder="Description" required />
+					<input type="text" name="title" placeholder="Title" required />
+					<input type="text" name="description" placeholder="Description" required />
 					<label for="taskDueDate">Due Date:</label>
-
-			        <input type="date" id="taskDueDate" name="dueDate" placeholder = "Due Date"required />
-					<!-- Dropdown for assigning the task to a user -->
+					<input type="date" id="taskDueDate" name="dueDate" placeholder="Due Date" required />
+					
 					<label for="assigneeID">Assign Task To:</label>
 					<select id="assigneeID" name="assigneeID" required>
-					    <option value="" disabled selected>Select a user</option>
-					    <!-- Loop through users and display them -->
-					    <option th:each="user : ${users}" 
-					            th:value="${user.id}" 
-					            th:text="${user.username}"></option>
+						<option value="" disabled selected>Select a user</option>
+						<option th:each="user : ${users}" th:value="${user.id}" th:text="${user.username}"></option>
+					</select><br>
+					
+					 <label> </label>
+					<label for="category">Categoría:</label>
+					<select id="category" name="categoryId" onchange="handleCategoryChange()" required>
+						<option value="" disabled selected>Select a category</option>
+						<option th:each="category : ${categories}"
+								th:value="${category.id}"
+								th:text="${category.name}"></option>
+						<option value="new">Create new category</option>
 					</select>
-					<label for="assigneeID">"${user.id}"</label>
-
-
-			        <button type="submit">Save</button>
-			        <a href="/" class="btn btn-secondary">Cancel</a>
-			    </form>
+					
+					<div id="newCategoryDiv" style="display: none; margin-top: 10px;">
+						<label for="newCategory">Name of new category:</label>
+						<input type="text" id="newCategory" name="newCategory">
+					</div>
+				
+					<button type="submit">Save</button>
+					<a href="/" class="btn btn-secondary">Cancel</a>
+				</form>
+				
 			    <p th:text="${error}"></p>
 			    <p th:text="${success}"></p>
 			</div>
@@ -41,4 +51,17 @@
         </main>
     </div>
 </body>
+<script>
+	function handleCategoryChange() {
+		const select = document.getElementById("category");
+		const newCategoryDiv = document.getElementById("newCategoryDiv");
+	
+		if (select.value === "new") {
+			newCategoryDiv.style.display = "block";
+		} else {
+			newCategoryDiv.style.display = "none";
+		}
+	}
+	</script>
+	
 </html>

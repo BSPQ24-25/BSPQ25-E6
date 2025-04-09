@@ -1,8 +1,10 @@
 package BSPQ25_E6.taskmanager.config;
 
 
+import BSPQ25_E6.taskmanager.model.Category;
 import BSPQ25_E6.taskmanager.model.Task;
 import BSPQ25_E6.taskmanager.model.User;
+import BSPQ25_E6.taskmanager.repository.CategoryRepository;
 import BSPQ25_E6.taskmanager.repository.TaskRepository;
 import BSPQ25_E6.taskmanager.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -18,10 +20,9 @@ import java.util.Random;
 public class DataLoader {
 
     @Bean
-    public CommandLineRunner loadData(UserRepository userRepository, TaskRepository taskRepository) {
+    public CommandLineRunner loadData(UserRepository userRepository, TaskRepository taskRepository, CategoryRepository categoryRepository) {
         return args -> {
-        	if ((userRepository.count()==0)&&(taskRepository.count()==0)) {
-        		// Crear 10 usuarios
+        	if ((userRepository.count()==0)&&(taskRepository.count()==0)&&(categoryRepository.count()==0)) {
                 for (int i = 1; i <= 10; i++) {
                     User user = new User("user" + i, "user" + i + "@mail.com", "password" + i);
                     userRepository.save(user);
@@ -29,7 +30,13 @@ public class DataLoader {
 
                 var users = userRepository.findAll();
                 Random random = new Random();
-
+                
+                for (int i=0; i<=10; i++) {
+                	Category category = new Category();
+                	category.setName("Category"+i);
+                	categoryRepository.save(category);
+                }
+                
                 // Crear 10 tareas
                 for (int i = 1; i <= 10; i++) {
                     Task task = new Task();
@@ -47,6 +54,8 @@ public class DataLoader {
 
                     taskRepository.save(task);
                 }
+                
+                
 
                 System.out.println("Datos de prueba insertados correctamente.");
             }
