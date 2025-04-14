@@ -35,24 +35,21 @@ public class DashboardController
 	    if (user == null) {
 	        return "redirect:/login"; 
 	    }
-
+	    List<Category> categories = new ArrayList<Category>();
 	    List<Task> tasks = taskRepository.findAll();
 	    List<Task> userTasks = new ArrayList<Task>();
 	    List<Task> doneTasks = new ArrayList<Task>();
 	    List<Task> myTasks = new ArrayList<Task>();
-	    List<Category> categories = categoryRepository.findAll();
 	    Map<Category,int[]> categoryProgress = new HashMap<>();
-	    for (Category category: categories) {
-	    	categoryProgress.put(category,new int[] {0,0});
-	    }
+	   
 	    for (Task task: tasks) {
 	    	int[] progress = {0,0};
 	    	if (task.getUser().getId()==user.getId()) {
 	    		userTasks.add(task);
+	    		
 	    		progress=categoryProgress.get(task.getCategory());
 	    		if (progress==null) {
 	    			progress = new int[]{0, 0}; 
-	                categoryProgress.put(task.getCategory(), progress);
 	    		}
 	    		progress[0]++;
 	    		
@@ -62,27 +59,33 @@ public class DashboardController
 		    		userTasks.remove(task);
 		    		myTasks.remove(task);
 		    	}
-		    	System.out.print("AAAA: "+progress);
+                categoryProgress.put(task.getCategory(), progress);
+
 	    	}
 	    	if (task.getAssignee().getId()==user.getId()) {
 	    		System.out.print("Task added"+task.getTitle());
 	    		myTasks.add(task);
+	    		    		
 	    		progress=categoryProgress.get(task.getCategory());
 	    		if (progress==null) {
 	    			progress = new int[]{0, 0}; 
 	                categoryProgress.put(task.getCategory(), progress);
 	    		}
 	    		progress[0]++;
-	    		
+	    		for (Category category: categories) {
+	    	    	categoryProgress.put(category,new int[] {0,0});
+	    	    }
 		    	if (task.getProgress()==100) {
 		    		progress[1]++;
 		    		doneTasks.add(task);
 		    		userTasks.remove(task);
 		    		myTasks.remove(task);
 		    	}
+                categoryProgress.put(task.getCategory(), progress);
+
 	    	}
-	    
-	    	categoryProgress.put(task.getCategory(), progress);
+	    	
+	    	
 	    }
 	    model.addAttribute("categoryProgress",categoryProgress);
 	    model.addAttribute("myTasks",myTasks);
