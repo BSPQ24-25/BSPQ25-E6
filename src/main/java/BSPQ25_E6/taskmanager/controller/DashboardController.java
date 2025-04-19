@@ -25,6 +25,7 @@ public class DashboardController
 	@Autowired
 	private TaskRepository taskRepository;
 	
+	@SuppressWarnings("unused")
 	@Autowired
 	private CategoryRepository categoryRepository;
 

@@ -1,10 +1,17 @@
 package BSPQ25_E6.taskmanager.model;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import BSPQ25_E6.taskmanager.model.Project; 
+
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 @Entity
 @Table(name = "app_user")
 public class User 
@@ -15,6 +22,16 @@ public class User
     private String username;
     private String email;
     private String password;
+
+    @ManyToMany
+    //we create a table for the many-to-many relationship between users and projects
+    @JoinTable
+    (
+        name = "user_project",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "project_id")
+    )
+    private Set<Project> projects = new HashSet<>();
 
 
     public User() 
@@ -66,4 +83,14 @@ public class User
 	public void setId(Long id) {
 		this.id = id;
 	}
+    public Set<Project> getProjects() 
+    {
+        return projects;
+    }
+    
+    public void setProjects(Set<Project> projects) 
+    {
+        this.projects = projects;
+    }
+    
 }
