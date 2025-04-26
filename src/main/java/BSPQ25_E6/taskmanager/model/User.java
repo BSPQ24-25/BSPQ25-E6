@@ -1,7 +1,7 @@
 package BSPQ25_E6.taskmanager.model;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import BSPQ25_E6.taskmanager.model.Project; 
+
 
 import java.util.HashSet;
 import java.util.Set;
@@ -32,8 +32,7 @@ public class User
         inverseJoinColumns = @JoinColumn(name = "project_id")
     )
     private Set<Project> projects = new HashSet<>();
-
-
+    
     public User() 
     {
     }
