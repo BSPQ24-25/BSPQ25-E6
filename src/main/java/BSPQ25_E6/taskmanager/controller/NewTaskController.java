@@ -1,15 +1,5 @@
 package BSPQ25_E6.taskmanager.controller;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import BSPQ25_E6.taskmanager.model.Category;
 import BSPQ25_E6.taskmanager.model.Task;
 import BSPQ25_E6.taskmanager.model.User;
@@ -17,89 +7,95 @@ import BSPQ25_E6.taskmanager.repository.CategoryRepository;
 import BSPQ25_E6.taskmanager.repository.TaskRepository;
 import BSPQ25_E6.taskmanager.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Controller
-public class NewTaskController {
-	
-	@Autowired
-	private TaskRepository taskRepository;
-	
-	@Autowired
-	private UserRepository userRepository;
-	
-	@Autowired
-	private CategoryRepository categoryRepository;
-	
-    @GetMapping("/newTask")
-    public String newTaskForm(HttpSession session, Model model) {
-	    User user = (User) session.getAttribute("user");
-	    List<User> users = userRepository.findAll();
-	    model.addAttribute("users",users);
-	    List<Category> categories = categoryRepository.findAll();
-	    model.addAttribute("categories",categories);
-    	if (user == null) {
-	        return "redirect:/login"; 
-	    }
+@RequestMapping("/tasks")
+public class NewTaskController 
+{
+
+    @Autowired
+    private TaskRepository taskRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    //show the form
+    @GetMapping("/new")
+    public String newTaskForm(HttpSession session, Model model) 
+    {
+        User user = (User) session.getAttribute("user");
+        if (user == null) 
+        {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("task", new Task());
+        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("categories", categoryRepository.findAll());
         return "newTask";
     }
-    @PostMapping("/newTask")
-    public String registerTask(@RequestParam String title, @RequestParam String description,@RequestParam String dueDate, @RequestParam("assigneeID") Long assigneeID,  @RequestParam String categoryId,@RequestParam(required = false) String newCategory,HttpSession session) {
-    	Task task = new Task();
-    	System.out.print("id de cate: "+categoryId);
-    	System.out.print("nomvre de cate: "+ newCategory);
+    @PostMapping("/create")
+    public String createTask(@RequestParam String title,
+                              @RequestParam String description,
+                              @RequestParam String dueDate,
+                              @RequestParam("assigneeID") Long assigneeID,
+                              @RequestParam String categoryId,
+                              @RequestParam(required = false) String newCategory,
+                              HttpSession session,
+                              Model model) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return "redirect:/login";
         }
-        Category category;
-        if (categoryId.contains("new")) {
-        	System.out.print("id de cate: "+categoryId);
-        	System.out.print("nomvre de cate: "+ newCategory);
 
-            category = new Category();
+        //here we validate the form manually 
+        if (title == null || title.length() < 3 || title.length() > 100 ||
+            description == null || description.length() < 10 || description.length() > 255) 
+        {
+            model.addAttribute("error", "Please fill the form correctly.");
+            model.addAttribute("users", userRepository.findAll());
+            model.addAttribute("categories", categoryRepository.findAll());
+            return "newTask";
+        }
+
+        Task task = new Task();
+        task.setTitle(title);
+        task.setDescription(description);
+        task.setCompleted(false);
+        task.setProgress(0);
+        task.setCreationDate(LocalDateTime.now());
+        task.setDueDate(LocalDateTime.parse(dueDate + "T00:00:00"));
+        Optional<User> assignee = userRepository.findById(assigneeID);
+        assignee.ifPresent(task::setAssignee);
+
+        if (categoryId.equals("new") && newCategory != null && !newCategory.isEmpty()) {
+            Category category = new Category();
             category.setName(newCategory);
             categoryRepository.save(category);
+            task.setCategory(category);
         } else {
-        	System.out.print("id de cate: "+categoryId);
-        	Long idCat = Long.parseLong(categoryId);
-        	System.out.print(idCat+"========");
-            category = (Category) categoryRepository.findById(idCat).orElse(null);
-
+            try {
+                Long catId = Long.parseLong(categoryId);
+                Optional<Category> category = categoryRepository.findById(catId);
+                category.ifPresent(task::setCategory);
+            } catch (NumberFormatException e) {
+                model.addAttribute("error", "Invalid category selection.");
+                model.addAttribute("users", userRepository.findAll());
+                model.addAttribute("categories", categoryRepository.findAll());
+                return "newTask";
+            }
         }
-        
-        LocalDateTime taskDate = LocalDateTime.parse(dueDate + "T00:00:00");
-    	task.setTitle(title);
-    	task.setDescription(description);
-    	task.setCompleted(false);
-    	task.setCategory(category);
-    	task.setProgress(0);
-    	task.setCreationDate(LocalDateTime.now());
-    	task.setAssignee(userRepository.findById(assigneeID).orElse(null));
-    	task.setDueDate(taskDate);
+        task.setUser(user);
 
-    	task.setUser(user);
-    	taskRepository.save(task);
-    	
-    	
-    	return "redirect:dashboard";
+        taskRepository.save(task);
+
+        return "redirect:/dashboard";
     }
-    @GetMapping("/my-tasks")
-    public String getMyTasks(HttpSession session, Model model) {
-        User user = (User) session.getAttribute("user");
-
-        if (user == null) {
-            return "redirect:/login";
-        }
-
-        List<Task> tasks = taskRepository.findByUser(user);
-        model.addAttribute("tasks", tasks);
-        return "my-tasks";
-    }
-    @PostMapping("/createCategory")
-    public String createCategory(@RequestParam("newCategory") String name) {
-        categoryRepository.save(new Category(name));
-
-        return "";
-    }
-
 }
