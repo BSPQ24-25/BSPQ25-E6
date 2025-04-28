@@ -5,7 +5,7 @@ import BSPQ25_E6.taskmanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+
 import java.util.Optional;
 
 @Service
@@ -25,8 +25,8 @@ public class UserService
         return userRepository.findByEmail(email);
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
+
+
+
 
 }

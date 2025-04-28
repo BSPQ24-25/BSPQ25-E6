@@ -8,9 +8,9 @@
 <body class="app">
     <div class='app'>
         <main class='project'>
-            <!-- Status Messages -->
-            <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
-            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+
+
 
             <div class="task-section-container">
                 <div class="task-header">
@@ -20,7 +20,7 @@
                         <button class="btn btn-delete"><i class="fas fa-trash"></i> Delete</button>
                     </div>
                 </div>
-                
+
                 <div class="task-main-content">
                     <div class="task-meta">
                         <div class="task-owner">
@@ -32,7 +32,7 @@
                                 <span class="creation-date" th:text="'Created: ' + ${task.creationDate}">Created: 15/05/2023</span>
                             </div>
                         </div>
-                        
+
                         <div class="task-details">
                             <div class="detail-item">
                                 <label>Due Date:</label>
@@ -44,27 +44,32 @@
                             </div>
                             <div class="detail-item">
                                 <label>Assignee:</label>
-                                <form th:action="@{/tasks/{id}/assign(id=${task.id})}" method="post" class="assign-form">
-                                    <select name="assigneeId" class="assignee-select">
-                                        <option value="">-- Unassigned --</option>
-                                        <option 
-                                            th:each="user : ${availableUsers}"
-                                            th:value="${user.id}"
-                                            th:text="${user.username}"
-                                            th:selected="${task.assignee != null and task.assignee.id == user.id}">
-                                        </option>
-                                    </select>
-                                    <button type="submit" class="btn btn-assign">
-                                        <i class="fas fa-user-check"></i> Assign
-                                    </button>
-                                </form>
+                                <div class="assignee">
+                                    <div class="avatar small">
+                                        <img th:src="'https://ui-avatars.com/api/?name=' + ${task.assignee.username} + '&background=7784ee&color=fff'" alt="Assignee Avatar">
+                                    </div>
+                                    <span th:text="${task.assignee.username}">Sarah Williams</span>
+                                </div>
+
+
+
+
+
+
+
+
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="task-description">
                         <h3>Task Description</h3>
                         <p th:text="${task.description}">This is a detailed description of the task that needs to be completed...</p>
+                        
+                        <div class="comments-section">
+                            <h4>Comments</h4>
+                            <!-- Similar structure for displaying comments -->
+                        </div>
                     </div>
                 </div>
             </div>
