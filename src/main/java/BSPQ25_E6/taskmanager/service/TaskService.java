@@ -6,6 +6,7 @@ import BSPQ25_E6.taskmanager.repository.TaskRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 
 @Service
@@ -20,15 +21,10 @@ public class TaskService {
     public Task findTaskById(Long taskId) {
         return taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
 
-
-
-
-
-
-
-
-
-
-
     }
+    public List<Task> getAllTasks() 
+    {
+        return taskRepository.findAll();
+    }
+    
 }
