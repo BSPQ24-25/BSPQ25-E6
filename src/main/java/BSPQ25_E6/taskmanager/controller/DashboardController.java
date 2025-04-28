@@ -34,65 +34,44 @@ public class DashboardController {
             return "redirect:/login"; 
         }
 
-        List<Category> categories = new ArrayList<>();
-        List<Task> tasks = taskRepository.findAll();
-        List<Task> userTasks = new ArrayList<>();
+        List<Task> allTasks = taskRepository.findAll();
+        List<Task> createdTasks = new ArrayList<>();
+        List<Task> assignedTasks = new ArrayList<>();
         List<Task> doneTasks = new ArrayList<>();
-        List<Task> myTasks = new ArrayList<>();
         Map<Category, int[]> categoryProgress = new HashMap<>();
 
-        for (Task task : tasks) {
-            int[] progress = {0, 0};
-
+        for (Task task : allTasks) {
             if (task.getUser().getId() == user.getId()) {
-                userTasks.add(task);
-
-                progress = categoryProgress.get(task.getCategory());
-                if (progress == null) {
-                    progress = new int[]{0, 0};
-                }
-                progress[0]++;
-
-                if (task.getProgress() == 100) {
-                    progress[1]++;
-                    doneTasks.add(task);
-                    userTasks.remove(task);
-                    myTasks.remove(task);
-                }
-                categoryProgress.put(task.getCategory(), progress);
+                createdTasks.add(task);
+                updateCategoryProgress(categoryProgress, task);
             }
 
-            if (task.getAssignee().getId() == user.getId()) {
-                System.out.print("Task added " + task.getTitle());
-                myTasks.add(task);
+            if (task.getAssignee() != null && task.getAssignee().getId() == user.getId()) {
+                assignedTasks.add(task);
+                updateCategoryProgress(categoryProgress, task);
+            }
 
-                progress = categoryProgress.get(task.getCategory());
-                if (progress == null) {
-                    progress = new int[]{0, 0};
-                    categoryProgress.put(task.getCategory(), progress);
-                }
-                progress[0]++;
-
-                for (Category category : categories) {
-                    categoryProgress.put(category, new int[]{0, 0});
-                }
-
-                if (task.getProgress() == 100) {
-                    progress[1]++;
-                    doneTasks.add(task);
-                    userTasks.remove(task);
-                    myTasks.remove(task);
-                }
-                categoryProgress.put(task.getCategory(), progress);
+            if (task.getProgress() == 100) {
+                doneTasks.add(task);
             }
         }
 
-        model.addAttribute("categoryProgress", categoryProgress);
-        model.addAttribute("myTasks", myTasks);
+        model.addAttribute("createdTasks", createdTasks);
+        model.addAttribute("assignedTasks", assignedTasks);
         model.addAttribute("doneTasks", doneTasks);
-        model.addAttribute("userTasks", userTasks);
-        model.addAttribute("tasks", tasks);
+        model.addAttribute("categoryProgress", categoryProgress);
 
         return "dashboard"; 
     }
+
+    private void updateCategoryProgress(Map<Category, int[]> progressMap, Task task) {
+        Category category = task.getCategory();
+        int[] progress = progressMap.getOrDefault(category, new int[]{0, 0});
+        progress[0]++; // Increment total tasks in category
+        if (task.getProgress() == 100) {
+            progress[1]++; // Increment completed tasks
+        }
+        progressMap.put(category, progress);
+    }
 }
+

@@ -5,15 +5,17 @@ import BSPQ25_E6.taskmanager.model.User;
 import BSPQ25_E6.taskmanager.repository.ProjectRepository;
 import BSPQ25_E6.taskmanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
-@RequestMapping("/projects")
-public class ProjectController 
-{
+@RequestMapping("/api/projects")  // Added "/api" for clarity
+public class ProjectController {
 
     @Autowired
     private ProjectRepository projectRepository;
@@ -21,41 +23,58 @@ public class ProjectController
     @Autowired
     private UserRepository userRepository;
 
-    //new project
-    @PostMapping("/create")
-    public Project createProject(@RequestBody Project project) 
-    {
-        return projectRepository.save(project);
+    // Create a new project
+    @PostMapping
+    public ResponseEntity<Project> createProject(@RequestBody Project project) {
+        try {
+            Project savedProject = projectRepository.save(project);
+            return new ResponseEntity<>(savedProject, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
-    //get prouject by id
-    @GetMapping("/all")
-    public List<Project> getAllProjects() 
-    {
-        return projectRepository.findAll();
+    // Get all projects
+    @GetMapping
+    public ResponseEntity<List<Project>> getAllProjects() {
+        List<Project> projects = projectRepository.findAll();
+        return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
-    //and assign user to project
-    @PostMapping("/{projectId}/addUser/{userId}")
-    public String addUserToProject(@PathVariable Long projectId, @PathVariable Long userId) 
-    {
+    // Assign user to project (improved)
+    @PostMapping("/{projectId}/users/{userId}")
+    public ResponseEntity<String> addUserToProject(
+            @PathVariable Long projectId,
+            @PathVariable Long userId) {
+
         Optional<Project> optionalProject = projectRepository.findById(projectId);
         Optional<User> optionalUser = userRepository.findById(userId);
 
-        if (optionalProject.isPresent() && optionalUser.isPresent()) 
-        {
-            Project project = optionalProject.get();
-            User user = optionalUser.get();
-
-            project.getUsers().add(user);
-            user.getProjects().add(project);
-
-            projectRepository.save(project);
-            userRepository.save(user);
-
-            return "User added to project successfully";
+        if (optionalProject.isEmpty() || optionalUser.isEmpty()) {
+            return new ResponseEntity<>("Project or user not found", HttpStatus.NOT_FOUND);
         }
 
-        return "User or project not found";
+        Project project = optionalProject.get();
+        User user = optionalUser.get();
+
+        // Check if user is already assigned
+        if (project.getUsers().contains(user)) {
+            return new ResponseEntity<>("User already assigned to project", HttpStatus.CONFLICT);
+        }
+
+        project.getUsers().add(user);
+        user.getProjects().add(project);
+
+        projectRepository.save(project);
+        userRepository.save(user);
+
+        return new ResponseEntity<>("User added to project successfully", HttpStatus.OK);
+    }
+
+    @GetMapping("/{projectId}/users")
+    public ResponseEntity<Set<User>> getProjectUsers(@PathVariable Long projectId) {
+        Optional<Project> project = projectRepository.findById(projectId);
+        return project.map(value -> new ResponseEntity<>(value.getUsers(), HttpStatus.OK))
+            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }
