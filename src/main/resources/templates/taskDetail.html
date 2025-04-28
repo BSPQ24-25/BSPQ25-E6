@@ -10,7 +10,7 @@
         <main class='project'>
             <div class="task-section-container">
                 <div class="task-header">
-                    <h1>#Task 123</h1>
+                    <h1 th:text="'#Task ' + ${task.id}">#Task 123</h1>
                     <div class="task-actions">
                         <button class="btn btn-edit"><i class="fas fa-edit"></i> Edit</button>
                         <button class="btn btn-delete"><i class="fas fa-trash"></i> Delete</button>
@@ -21,30 +21,30 @@
                     <div class="task-meta">
                         <div class="task-owner">
                             <div class="avatar">
-                                <img src="https://ui-avatars.com/api/?name=John+Doe&background=7784ee&color=fff" alt="User Avatar">
+                                <img th:src="'https://ui-avatars.com/api/?name=' + ${task.user.username} + '&background=7784ee&color=fff'" alt="User Avatar">
                             </div>
                             <div class="owner-info">
-                                <span class="owner-name">John Doe</span>
-                                <span class="creation-date">Created: 15/05/2023</span>
+                                <span class="owner-name" th:text="${task.user.username}">John Doe</span>
+                                <span class="creation-date" th:text="'Created: ' + ${task.creationDate}">Created: 15/05/2023</span>
                             </div>
                         </div>
                         
                         <div class="task-details">
                             <div class="detail-item">
                                 <label>Due Date:</label>
-                                <span class="due-date">25/05/2023</span>
+                                <span class="due-date" th:text="${task.dueDate}">25/05/2023</span>
                             </div>
                             <div class="detail-item">
                                 <label>Priority:</label>
-                                <span class="priority high">High</span>
+                                <span class="priority" th:classappend="${task.priority}">High</span>
                             </div>
                             <div class="detail-item">
                                 <label>Assignee:</label>
                                 <div class="assignee">
                                     <div class="avatar small">
-                                        <img src="https://ui-avatars.com/api/?name=Sarah+Williams&background=7784ee&color=fff" alt="Assignee Avatar">
+                                        <img th:src="'https://ui-avatars.com/api/?name=' + ${task.assignee.username} + '&background=7784ee&color=fff'" alt="Assignee Avatar">
                                     </div>
-                                    <span>Sarah Williams</span>
+                                    <span th:text="${task.assignee.username}">Sarah Williams</span>
                                 </div>
                             </div>
                         </div>
@@ -52,67 +52,13 @@
                     
                     <div class="task-description">
                         <h3>Task Description</h3>
-                        <p>This is a detailed description of the task that needs to be completed. It includes all the necessary information about what needs to be done, any specific requirements, and other relevant details.</p>
+                        <p th:text="${task.description}">This is a detailed description of the task that needs to be completed...</p>
                         
                         <div class="comments-section">
                             <h4>Comments</h4>
-                            <div class="comment">
-                                <div class="comment-avatar">
-                                    <img src="https://ui-avatars.com/api/?name=Mike+Johnson&background=fba63c&color=fff" alt="Commenter Avatar">
-                                </div>
-                                <div class="comment-content">
-                                    <div class="comment-header">
-                                        <span class="comment-author">Mike Johnson</span>
-                                        <span class="comment-date">16/05/2023 14:30</span>
-                                    </div>
-                                    <p class="comment-text">I've started working on this task. Should be done by Wednesday.</p>
-                                </div>
-                            </div>
-                            
-                            <div class="add-comment">
-                                <textarea placeholder="Add a comment..."></textarea>
-                                <button class="btn btn-primary">Post Comment</button>
-                            </div>
+                            <!-- Similar structure for displaying comments -->
                         </div>
                     </div>
-                </div>
-                
-                <div class="task-edit-form" style="display: none;">
-                    <h3>Edit Task</h3>
-                    <form class="task-form">
-                        <div class="form-group">
-                            <label>Task Name</label>
-                            <input type="text" value="#Task 123">
-                        </div>
-                        <div class="form-group">
-                            <label>Due Date</label>
-                            <input type="date" value="2023-05-25">
-                        </div>
-                        <div class="form-group">
-                            <label>Priority</label>
-                            <select>
-                                <option value="low">Low</option>
-                                <option value="medium">Medium</option>
-                                <option value="high" selected>High</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Assignee</label>
-                            <select name="assignee">
-                                <option value="1">Jane Smith</option>
-                                <option value="2">Mike Johnson</option>
-                                <option value="3" selected>Sarah Williams</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Description</label>
-                            <textarea>This is a detailed description of the task that needs to be completed. It includes all the necessary information about what needs to be done, any specific requirements, and other relevant details.</textarea>
-                        </div>
-                        <div class="form-actions">
-                            <button type="button" class="btn btn-secondary cancel-edit">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
-                        </div>
-                    </form>
                 </div>
             </div>
         </main>

@@ -50,15 +50,17 @@
                     </div>
                     <div class="tasks">
                         <div th:each="task : ${userTasks}" class="task">
-                            <h3 th:text="${task.title}">Task Title</h3>
-                            <p th:text="${task.description}">Task description...</p>
-                            <p th:text="'Progress: '+${task.progress}+'%'" style="font-size: 12px; color: #6c757d;">Progress</p>
-                            <span><time th:datetime="${#temporals.format(task.dueDate, 'yyyy-MM-dd')}"
-                                        th:text="'Deadline: '+${#temporals.format(task.dueDate, 'dd MMM yyyy')}" style="font-size: 12px; color: #6c757d;">
-                            </time></span>
-                            <p th:text="'Assigned to: '+ ${task.assignee.username}" style="font-size: 12px; color: #6c757d;">Assigned To</p>
-                            <p th:text="'Created by: '+ ${task.user.username}" style="font-size: 12px; color: #6c757d;">Created By</p>
-                            <p th:text="'Category: '+ ${task.category.name}" style="font-size: 12px; color: #6c757d;">Category</p>
+                            <a th:href="@{/taskDetail/{taskId}(taskId=${task.id})}">
+                                <h3 th:text="${task.title}">Task Title</h3>
+                                <p th:text="${task.description}">Task description...</p>
+                                <p th:text="'Progress: '+${task.progress}+'%'" style="font-size: 12px; color: #6c757d;">Progress</p>
+                                <span><time th:datetime="${#temporals.format(task.dueDate, 'yyyy-MM-dd')}"
+                                            th:text="'Deadline: '+${#temporals.format(task.dueDate, 'dd MMM yyyy')}" style="font-size: 12px; color: #6c757d;">
+                                </time></span>
+                                <p th:text="'Assigned to: '+ ${task.assignee.username}" style="font-size: 12px; color: #6c757d;">Assigned To</p>
+                                <p th:text="'Created by: '+ ${task.user.username}" style="font-size: 12px; color: #6c757d;">Created By</p>
+                                <p th:text="'Category: '+ ${task.category.name}" style="font-size: 12px; color: #6c757d;">Category</p>
+                            </a>
                         </div>
                     </div>
                 </div>
