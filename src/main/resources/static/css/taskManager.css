@@ -96,8 +96,10 @@
     border: 3px dashed transparent;
   }
   .task:hover {
-    box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
-    border-color: rgba(162, 179, 207, 0.2) !important;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.2s;
   }
   .task p {
     font-size: 15px;
@@ -1189,3 +1191,7 @@ body {
 .auth-buttons a:hover {
   background-color: #574fd3;
 }
+
+
+
+
