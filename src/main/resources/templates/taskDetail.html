@@ -29,14 +29,14 @@
                             </div>
                             <div class="owner-info">
                                 <span class="owner-name" th:text="${task.user.username}">John Doe</span>
-                                <span class="creation-date" th:text="'Created: ' + ${task.creationDate}">Created: 15/05/2023</span>
+                                <span class="creation-date" th:text="'Created: ' + ${task.creationDate != null ? task.creationDate.format(T(java.time.format.DateTimeFormatter).ofPattern('dd/MM/yyyy')) : ''}">Created: 15/05/2023</span>
                             </div>
                         </div>
 
                         <div class="task-details">
                             <div class="detail-item">
                                 <label>Due Date:</label>
-                                <span class="due-date" th:text="${task.dueDate}">25/05/2023</span>
+                                <span class="due-date" th:text="${task.dueDate != null ? task.dueDate.format(T(java.time.format.DateTimeFormatter).ofPattern('dd/MM/yyyy')) : ''}">25/05/2023</span>
                             </div>
                             <!-- <div class="detail-item">
                                 <label>Priority:</label>
