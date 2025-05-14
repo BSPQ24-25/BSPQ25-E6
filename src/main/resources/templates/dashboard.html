@@ -44,6 +44,8 @@
 
             <div class='project-tasks'>
                 <!--Created Tasks-->
+                
+               
                 <div class='project-column'>
                     <div class='project-column-heading'>
                         <h2 class='project-column-heading__title'>Created Tasks</h2>
@@ -137,32 +139,41 @@
                     </div>
                 </div>
 
+                <div class='title-column'>
+                    <h2 class='text'>All Tasks</h2>
+                </div>
+                <div class='title-column'>
+                    <h2 class='text'></h2>
+                </div>
+                <div class='title-column'>
+                    <h2 class='text'></h2>
+                </div>
+                <div class='title-column'>
+                    <h2 class='text'></h2>
+                </div>
                 <!--All Tasks-->
-                <div class='project-column'>
-                    <div class='project-column-heading'>
-                        <h2 class='project-column-heading__title'>All Tasks</h2>
-                        <button class='project-column-heading__options'><i class="fas fa-ellipsis-h"></i></button>
-                    </div>
-                    <div class="tasks">
-                        <div th:each="task : ${tasks}" class="task">
-                            <a th:href="@{/taskDetail/{taskId}(taskId=${task.id})}" style="text-decoration: none; color: inherit; display: block;">
-                                <h3 th:text="${task.title}">Task Title</h3>
-                                <p th:text="${task.description}">Task description...</p>
-                                <p th:text="'Progress: '+${task.progress}+'%'" style="font-size: 12px; color: #6c757d;">Progress</p>
-                                <span>
-                                    <time th:datetime="${#temporals.format(task.dueDate, 'yyyy-MM-dd')}"
-                                          th:text="'Deadline: '+${#temporals.format(task.dueDate, 'dd MMM yyyy')}" 
-                                          style="font-size: 12px; color: #6c757d;">
-                                    </time>
-                                </span>
-                                <p th:text="'Assigned to: '+ ${task.assignee.username}" style="font-size: 12px; color: #6c757d;">Assigned To</p>
-                                <p th:text="'Created by: '+ ${task.user.username}" style="font-size: 12px; color: #6c757d;">Created By</p>
-                                <p th:text="'Category: '+ ${task.category.name}" style="font-size: 12px; color: #6c757d;">Category</p>
-                            </a>
-                        </div>
+                
+                <div th:each="task : ${tasks}"class='project-column'>
+
+                    <div  class="task">
+                        <a th:href="@{/taskDetail/{taskId}(taskId=${task.id})}" style="text-decoration: none; color: inherit; display: block;">
+                            <h3 th:text="${task.title}">Task Title</h3>
+                            <p th:text="${task.description}">Task description...</p>
+                            <p th:text="'Progress: '+${task.progress}+'%'" style="font-size: 12px; color: #6c757d;">Progress</p>
+                            <span>
+                                <time th:datetime="${#temporals.format(task.dueDate, 'yyyy-MM-dd')}"
+                                    th:text="'Deadline: '+${#temporals.format(task.dueDate, 'dd MMM yyyy')}" 
+                                    style="font-size: 12px; color: #6c757d;">
+                                </time>
+                            </span>
+                            <p th:text="'Assigned to: '+ ${task.assignee.username}" style="font-size: 12px; color: #6c757d;">Assigned To</p>
+                            <p th:text="'Created by: '+ ${task.user.username}" style="font-size: 12px; color: #6c757d;">Created By</p>
+                            <p th:text="'Category: '+ ${task.category.name}" style="font-size: 12px; color: #6c757d;">Category</p>
+                        </a>
                     </div>
                 </div>
             </div>
+            
         </main>
 
         <!--Sidebar-->

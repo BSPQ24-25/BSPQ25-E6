@@ -47,7 +47,7 @@
   
   .project {
     padding: 2rem;
-    max-width: 75%;
+    max-width:100%;
     width: 100%;
     display: inline-block;
   }
@@ -68,6 +68,13 @@
     width: 100%;
     grid-column-gap: 1.5rem;
   }
+  .project-tasks .title-column{
+    height: 50px;
+  }
+  
+  
+  
+  
   .project-column-heading {
     margin-bottom: 1rem;
     display: flex;
@@ -90,7 +97,7 @@
     background-color: var(--white);
     padding: 1rem;
     border-radius: 8px;
-    width: 100%;
+    width: 250px;
     box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
     margin-bottom: 1rem;
     border: 3px dashed transparent;
