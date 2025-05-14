@@ -175,40 +175,41 @@
             </div>
             
         </main>
-
-        <!--Sidebar-->
-        <aside class='task-details'>
-            <div class='tag-progress'>
-                <h2>Task Progress</h2>
-                <div th:each="entry : ${categoryProgress}">
-                    <div class='tag-progress'>
-                        <p><strong th:text="${entry.key.name}">Category Name</strong> <span th:text="${entry.value[1]}+'/'+${entry.value[0]}"></span></p>
-                        <progress class="progress progress--copyright">
-                        </progress>
-                    </div>
+        <div class='tag-progress'>
+            <h2>Task Progress</h2>
+            <div th:each="entry : ${categoryProgress}">
+                <div class='tag-progress'>
+                    <p><strong th:text="${entry.key.name}">Category Name</strong> <span th:text="${entry.value[1]}+'/'+${entry.value[0]}"></span></p>
+                    <progress class="progress progress--copyright">
+                    </progress>
                 </div>
             </div>
+        </div>
+        <!--Sidebar-->
+        <div class='task-activity'>
+            <h2>Recent Activity</h2>
+            <ul>
+                <li>
+                    <span class='task-icon task-icon--attachment'><i class="fas fa-paperclip"></i></span>
+                    <b>Andrea</b> uploaded 3 documents
+                    <time datetime="2021-11-24T20:00:00">Aug 10</time>
+                </li>
+                <li>
+                    <span class='task-icon task-icon--comment'><i class="fas fa-comment"></i></span>
+                    <b>Karen</b> left a comment
+                    <time datetime="2021-11-24T20:00:00">Aug 11</time>
+                </li>
+                <li>
+                    <span class='task-icon task-icon--edit'><i class="fas fa-pencil-alt"></i></span>
+                    <b>Karen</b> edited the task
+                    <time datetime="2021-11-24T20:00:00">Aug 12</time>
+                </li>
+            </ul>
+        </div>
+        <aside class='task-details'>
+            
 
-            <div class='task-activity'>
-                <h2>Recent Activity</h2>
-                <ul>
-                    <li>
-                        <span class='task-icon task-icon--attachment'><i class="fas fa-paperclip"></i></span>
-                        <b>Andrea</b> uploaded 3 documents
-                        <time datetime="2021-11-24T20:00:00">Aug 10</time>
-                    </li>
-                    <li>
-                        <span class='task-icon task-icon--comment'><i class="fas fa-comment"></i></span>
-                        <b>Karen</b> left a comment
-                        <time datetime="2021-11-24T20:00:00">Aug 11</time>
-                    </li>
-                    <li>
-                        <span class='task-icon task-icon--edit'><i class="fas fa-pencil-alt"></i></span>
-                        <b>Karen</b> edited the task
-                        <time datetime="2021-11-24T20:00:00">Aug 12</time>
-                    </li>
-                </ul>
-            </div>
+            
         </aside>
     </div>
 </body>
