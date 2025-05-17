@@ -42,5 +42,17 @@ public class ProjectIntegrationTest
         //asSING USER TO PROJECT
         ResponseEntity<String> assignResponse = restTemplate.postForEntity("/projects/" + projectId + "/addUser/" + userId, null, String.class);
         assertEquals(HttpStatus.OK, assignResponse.getStatusCode());
+
+        //VERIFY USER ASSIGNMENT
+        ResponseEntity<Project> projectGetResponse = restTemplate.getForEntity(
+                "/projects/" + projectId, Project.class);
+        assertEquals(HttpStatus.OK, projectGetResponse.getStatusCode());
+        Project fetchedProject = projectGetResponse.getBody();
+        assertNotNull(fetchedProject);
+        assertFalse(fetchedProject.getUsers().isEmpty());
+
+        boolean userFound = fetchedProject.getUsers().stream()
+                .anyMatch(u -> u.getId().equals(userId));
+        assertTrue(userFound, "Assigned user should be part of the project users list");
     }
 }

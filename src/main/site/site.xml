@@ -4,11 +4,17 @@
     <artifactId>maven-fluido-skin</artifactId>
     <version>1.10.0</version>
   </skin>
+
   <body>
     <menu ref="reports"/>
+    
     <menu name="Performance Reports">
-      <item name="Performance Page" href="duration-perf-report.html"/>
-      <item name="Direct HTML Report" href="/target/reports/duration-perf-report.html"/>
+      <item name="User - Duration Report" href="reports/duration-user-report.html"/>
+      <item name="User - Throughput Report" href="reports/throughput-user-report.html"/>
+      <item name="Task - Duration Report" href="reports/duration-task-report.html"/>
+      <item name="Task - Throughput Report" href="reports/throughput-task-report.html"/>
+      <item name="Project - Duration Report" href="reports/duration-project-report.html"/>
+      <item name="Project - Throughput Report" href="reports/throughput-project-report.html"/>
     </menu>
   </body>
 </project>
