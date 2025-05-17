@@ -17,7 +17,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class TaskRepositoryTest {
+class TaskRepositoryTest 
+{
 
     @Autowired
     private TaskRepository taskRepository;
@@ -39,7 +40,8 @@ class TaskRepositoryTest {
 
     @Test
     @DisplayName("Save a Task and verify it is stored correctly")
-    void testSaveTask() {
+    void testSaveTask() 
+    {
         User user = new User("testuser", "testuser@example.com", "password123");
         user = userRepository.save(user);
 
@@ -70,7 +72,8 @@ class TaskRepositoryTest {
 
     @Test
     @DisplayName("Find tasks by User")
-    void testFindTasksByUser() {
+    void testFindTasksByUser() 
+    {
         User user = new User("finduser", "finduser@example.com", "password456");
         user = userRepository.save(user);
 
@@ -110,7 +113,8 @@ class TaskRepositoryTest {
 
     @Test
     @DisplayName("Find tasks by Assignee")
-    void testFindTasksByAssignee() {
+    void testFindTasksByAssignee() 
+    {
         User creator = new User("creator", "creator@example.com", "pass123");
         creator = userRepository.save(creator);
 
@@ -141,7 +145,8 @@ class TaskRepositoryTest {
 
     @Test
     @DisplayName("Find tasks by Category")
-    void testFindTasksByCategory() {
+    void testFindTasksByCategory() 
+    {
         User user = new User("catuser", "catuser@example.com", "catpass");
         user = userRepository.save(user);
 
