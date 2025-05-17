@@ -82,7 +82,7 @@ public class AuthController
         return "redirect:/login"; 
     }
     
-    @PostMapping("/api/users/register")
+    @PostMapping("/users/register")
     @ResponseBody
     public ResponseEntity<User> registerUserApi(@RequestBody User user) 
     {

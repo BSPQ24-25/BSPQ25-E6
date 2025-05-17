@@ -3,11 +3,12 @@ package BSPQ25_E6.taskmanager.repository;
 import BSPQ25_E6.taskmanager.model.Task;
 import BSPQ25_E6.taskmanager.model.User;
 import BSPQ25_E6.taskmanager.model.Category;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.junit.jupiter.api.AfterEach;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,8 +17,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class TaskRepositoryTest 
-{
+class TaskRepositoryTest {
 
     @Autowired
     private TaskRepository taskRepository;
@@ -36,14 +36,11 @@ class TaskRepositoryTest
         categoryRepository.deleteAll();
     }
 
+
     @Test
     @DisplayName("Save a Task and verify it is stored correctly")
-    void testSaveTask() 
-    {
-        User user = new User();
-        user.setUsername("testuser");
-        user.setEmail("testuser@example.com");
-        user.setPassword("password123");
+    void testSaveTask() {
+        User user = new User("testuser", "testuser@example.com", "password123");
         user = userRepository.save(user);
 
         Category category = new Category();
@@ -57,27 +54,24 @@ class TaskRepositoryTest
         task.setCreationDate(LocalDateTime.now());
         task.setDueDate(LocalDateTime.now().plusDays(7));
         task.setUser(user);
-        task.setAssignee(user); 
+        task.setAssignee(user);
         task.setCategory(category);
+
         Task savedTask = taskRepository.save(task);
 
-        assertNotNull(savedTask.getId(), "Task ID should not be null after saving");
+        assertNotNull(savedTask.getId());
         assertEquals("Test Task Title", savedTask.getTitle());
         assertEquals("testuser", savedTask.getUser().getUsername());
         assertEquals("Test Category", savedTask.getCategory().getName());
 
         Optional<Task> foundTask = taskRepository.findById(savedTask.getId());
-        assertTrue(foundTask.isPresent(), "Task should be found in database");
+        assertTrue(foundTask.isPresent());
     }
 
     @Test
     @DisplayName("Find tasks by User")
-    void testFindTasksByUser() 
-    {
-        User user = new User();
-        user.setUsername("finduser");
-        user.setEmail("finduser@example.com");
-        user.setPassword("password456");
+    void testFindTasksByUser() {
+        User user = new User("finduser", "finduser@example.com", "password456");
         user = userRepository.save(user);
 
         Category category = new Category();
@@ -109,24 +103,18 @@ class TaskRepositoryTest
         List<Task> userTasks = taskRepository.findByUser(user);
 
         assertNotNull(userTasks);
-        assertEquals(2, userTasks.size(), "User should have exactly 2 tasks assigned.");
+        assertEquals(2, userTasks.size());
         assertEquals("Task 1", userTasks.get(0).getTitle());
         assertEquals("Task 2", userTasks.get(1).getTitle());
     }
+
     @Test
     @DisplayName("Find tasks by Assignee")
-    void testFindTasksByAssignee() 
-    {
-        User creator = new User();
-        creator.setUsername("creator");
-        creator.setEmail("creator@example.com");
-        creator.setPassword("pass123");
+    void testFindTasksByAssignee() {
+        User creator = new User("creator", "creator@example.com", "pass123");
         creator = userRepository.save(creator);
 
-        User assignee = new User();
-        assignee.setUsername("assignee");
-        assignee.setEmail("assignee@example.com");
-        assignee.setPassword("pass456");
+        User assignee = new User("assignee", "assignee@example.com", "pass456");
         assignee = userRepository.save(assignee);
 
         Category category = new Category();
@@ -153,12 +141,8 @@ class TaskRepositoryTest
 
     @Test
     @DisplayName("Find tasks by Category")
-    void testFindTasksByCategory() 
-    {
-        User user = new User();
-        user.setUsername("catuser");
-        user.setEmail("catuser@example.com");
-        user.setPassword("catpass");
+    void testFindTasksByCategory() {
+        User user = new User("catuser", "catuser@example.com", "catpass");
         user = userRepository.save(user);
 
         Category category = new Category();

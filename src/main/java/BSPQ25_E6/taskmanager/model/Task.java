@@ -17,22 +17,21 @@ public class Task {
     private boolean completed;
     private LocalDateTime dueDate;
     private LocalDateTime creationDate;
-    
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "user_id", nullable = false) 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "asignee",nullable = false)
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "asignee", nullable = false)
     private User assignee;
-    
-    @ManyToOne()
-    @JoinColumn(name = "category",nullable=false)
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "category", nullable = false)
     private Category category;
-    public Task() {
-    }
-    
+
+    public Task() {}
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -45,48 +44,21 @@ public class Task {
     public boolean isCompleted() { return completed; }
     public void setCompleted(boolean completed) { this.completed = completed; }
 
-
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
 
-	public LocalDateTime getDueDate() {
-		return dueDate;
-	}
+    public LocalDateTime getDueDate() { return dueDate; }
+    public void setDueDate(LocalDateTime dueDate) { this.dueDate = dueDate; }
 
-	public void setDueDate(LocalDateTime dueDate) {
-		this.dueDate = dueDate;
-	}
+    public int getProgress() { return progress; }
+    public void setProgress(int progress) { this.progress = progress; }
 
-	public int getProgress() {
-		return progress;
-	}
+    public LocalDateTime getCreationDate() { return creationDate; }
+    public void setCreationDate(LocalDateTime creationDate) { this.creationDate = creationDate; }
 
-	public void setProgress(int progress) {
-		this.progress = progress;
-	}
+    public User getAssignee() { return assignee; }
+    public void setAssignee(User assignee) { this.assignee = assignee; }
 
-	public LocalDateTime getCreationDate() {
-		return creationDate;
-	}
-
-	public void setCreationDate(LocalDateTime creationDate) {
-		this.creationDate = creationDate;
-	}
-
-	public User getAssignee() {
-		return assignee;
-	}
-
-	public void setAssignee(User assignee) {
-		this.assignee = assignee;
-	}
-
-	public Category getCategory() {
-		return category;
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
-	}
-
+    public Category getCategory() { return category; }
+    public void setCategory(Category category) { this.category = category; }
 }

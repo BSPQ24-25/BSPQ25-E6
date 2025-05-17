@@ -5,8 +5,7 @@ import BSPQ25_E6.taskmanager.model.User;
 import BSPQ25_E6.taskmanager.repository.ProjectRepository;
 import BSPQ25_E6.taskmanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
-
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,15 +43,12 @@ public class ProjectController
 
     //and assign user to project
     @PostMapping("/{projectId}/addUser/{userId}")
-    public String addUserToProject(@PathVariable Long projectId, @PathVariable Long userId) 
-    {
-
+    public ResponseEntity<String> addUserToProject(@PathVariable Long projectId, @PathVariable Long userId) {
 
         Optional<Project> optionalProject = projectRepository.findById(projectId);
         Optional<User> optionalUser = userRepository.findById(userId);
 
-        if (optionalProject.isPresent() && optionalUser.isPresent()) 
-        {
+        if (optionalProject.isPresent() && optionalUser.isPresent()) {
             Project project = optionalProject.get();
             User user = optionalUser.get();
 
@@ -62,24 +58,16 @@ public class ProjectController
             projectRepository.save(project);
             userRepository.save(user);
 
-            return "User added to project successfully";
-
-
+            return ResponseEntity.ok("User added to project successfully");
         }
 
-        return "User or project not found";
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return ResponseEntity.status(404).body("User or project not found");
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<Project> getProjectById(@PathVariable Long id) {
+        Optional<Project> optionalProject = projectRepository.findById(id);
+        return optionalProject.map(ResponseEntity::ok)
+                            .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
 }

@@ -25,7 +25,7 @@ public class ProjectIntegrationTest
 
         //USER WITH UNIQUE EMAIL
         User user = new User("Carlos-" + randomUUID, "carlos-" + randomUUID + "@email.com", "password123");
-        ResponseEntity<User> userResponse = restTemplate.postForEntity("/api/users/register", user, User.class);
+        ResponseEntity<User> userResponse = restTemplate.postForEntity("/users/register", user, User.class);
         assertEquals(HttpStatus.CREATED, userResponse.getStatusCode());
         User createdUser = userResponse.getBody();
         assertNotNull(createdUser);
