@@ -1,19 +1,19 @@
 package BSPQ25_E6.taskmanager.service;
 
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
-
 import BSPQ25_E6.taskmanager.model.Project;
 import BSPQ25_E6.taskmanager.model.User;
 import BSPQ25_E6.taskmanager.repository.ProjectRepository;
 import BSPQ25_E6.taskmanager.repository.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
-import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.mockito.*;
+
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class ProjectServiceTest 
 {
@@ -27,13 +27,16 @@ class ProjectServiceTest
     @InjectMocks
     private ProjectService projectService;
 
+    private AutoCloseable closeable;
+
     @BeforeEach
     void setUp() 
     {
-        MockitoAnnotations.openMocks(this);
+        closeable = MockitoAnnotations.openMocks(this);
     }
 
     @Test
+    @DisplayName("Should create a new project")
     void testCreateProject() 
     {
         Project project = new Project("Proyect A", "A");
@@ -48,6 +51,7 @@ class ProjectServiceTest
     }
 
     @Test
+    @DisplayName("Should add user to project")
     void testAddUserToProject() 
     {
         User user = new User("Diego", "diego@email.com", "password123");
@@ -63,5 +67,26 @@ class ProjectServiceTest
         assertTrue(user.getProjects().contains(project));
         verify(projectRepository, times(1)).save(project);
         verify(userRepository, times(1)).save(user);
+    }
+
+    @Test
+    @DisplayName("Should return projects by owner")
+    void testGetProjectsByOwner() 
+    {
+        User owner = new User();
+        owner.setId(2L);
+        owner.setUsername("ana");
+
+        Project p1 = new Project("Project 1", "Desc 1"); p1.setOwner(owner);
+        Project p2 = new Project("Project 2", "Desc 2"); p2.setOwner(owner);
+
+        when(projectRepository.findByOwner(owner)).thenReturn(List.of(p1, p2));
+
+        List<Project> result = projectService.getProjectsByOwner(owner);
+
+        assertEquals(2, result.size());
+        assertEquals("Project 1", result.get(0).getName());
+        assertEquals("Project 2", result.get(1).getName());
+        verify(projectRepository, times(1)).findByOwner(owner);
     }
 }

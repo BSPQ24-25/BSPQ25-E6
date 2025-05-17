@@ -19,6 +19,9 @@ public class Project
     @ManyToMany(mappedBy = "projects")
     private Set<User> users = new HashSet<>();
 
+    @ManyToOne
+    private User owner;
+
     public Project() {
     }
 
@@ -61,5 +64,15 @@ public class Project
     public void setUsers(Set<User> users) 
     {
         this.users = users;
+    }
+
+    public User getOwner() 
+    {
+    return owner;
+    }
+
+    public void setOwner(User owner) 
+    {
+        this.owner = owner;
     }
 }

@@ -15,7 +15,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class TaskServiceTest {
+class TaskServiceTest 
+{
 
     @Mock
     private TaskRepository taskRepository;
@@ -28,7 +29,8 @@ class TaskServiceTest {
     private User user;
 
     @BeforeEach
-    void setUp() {
+    void setUp() 
+    {
         closeable = MockitoAnnotations.openMocks(this);
         user = new User();
         user.setId(1L);
@@ -37,7 +39,8 @@ class TaskServiceTest {
 
     @Test
     @DisplayName("Should create a new task")
-    void testCreateTask() {
+    void testCreateTask() 
+    {
         Task task = new Task();
         task.setTitle("New Task");
         task.setUser(user);
@@ -53,7 +56,8 @@ class TaskServiceTest {
 
     @Test
     @DisplayName("Should return tasks by user")
-    void testGetTasksByUser() {
+    void testGetTasksByUser() 
+    {
         Task task1 = new Task();
         task1.setTitle("Task 1");
         task1.setUser(user);
@@ -72,7 +76,8 @@ class TaskServiceTest {
 
     @Test
     @DisplayName("Should return task by ID if found")
-    void testGetTaskByIdFound() {
+    void testGetTaskByIdFound() 
+    {
         Task task = new Task();
         task.setId(10L);
         task.setTitle("Task by ID");
@@ -87,7 +92,8 @@ class TaskServiceTest {
 
     @Test
     @DisplayName("Should delete task by ID")
-    void testDeleteTask() {
+    void testDeleteTask() 
+    {
         Long taskId = 5L;
 
         taskService.deleteTask(taskId);

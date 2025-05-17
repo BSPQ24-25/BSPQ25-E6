@@ -1,5 +1,6 @@
 package BSPQ25_E6.taskmanager.service;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,6 +13,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
+import java.util.List;
+
 
 class UserServiceTest 
 {
@@ -51,5 +54,19 @@ class UserServiceTest
 
         assertTrue(foundUser.isPresent());
         assertEquals("Diego", foundUser.get().getUsername());
+    }
+    @Test
+    void testGetAllUsers() 
+    {
+        User u1 = new User("Ana", "ana@email.com", "1234");
+        User u2 = new User("Juan", "juan@email.com", "abcd");
+
+        when(userRepository.findAll()).thenReturn(List.of(u1, u2));
+
+        List<User> result = userService.getAllUsers();
+
+        assertEquals(2, result.size());
+        assertEquals("Ana", result.get(0).getUsername());
+        verify(userRepository, times(1)).findAll();
     }
 }

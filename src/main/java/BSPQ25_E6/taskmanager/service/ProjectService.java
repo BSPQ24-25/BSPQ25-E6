@@ -58,4 +58,13 @@ public class ProjectService
         return projectRepository.findAll();
     }
     
+    public List<Project> getProjectsByOwner(User owner) 
+    {
+    return projectRepository.findByOwner(owner);
+    }
+    public void deleteProject(Long id) 
+    {
+        projectRepository.deleteById(id);
+    }
+
 }
