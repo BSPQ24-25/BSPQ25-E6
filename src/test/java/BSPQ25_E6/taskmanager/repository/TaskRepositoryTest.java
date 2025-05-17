@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.AfterEach;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,7 +16,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class TaskRepositoryTest {
+class TaskRepositoryTest 
+{
 
     @Autowired
     private TaskRepository taskRepository;
@@ -26,9 +28,18 @@ class TaskRepositoryTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @AfterEach
+    void cleanUp() 
+    {
+        taskRepository.deleteAll();
+        userRepository.deleteAll();
+        categoryRepository.deleteAll();
+    }
+
     @Test
     @DisplayName("Save a Task and verify it is stored correctly")
-    void testSaveTask() {
+    void testSaveTask() 
+    {
         User user = new User();
         user.setUsername("testuser");
         user.setEmail("testuser@example.com");
@@ -61,7 +72,8 @@ class TaskRepositoryTest {
 
     @Test
     @DisplayName("Find tasks by User")
-    void testFindTasksByUser() {
+    void testFindTasksByUser() 
+    {
         User user = new User();
         user.setUsername("finduser");
         user.setEmail("finduser@example.com");
@@ -100,5 +112,74 @@ class TaskRepositoryTest {
         assertEquals(2, userTasks.size(), "User should have exactly 2 tasks assigned.");
         assertEquals("Task 1", userTasks.get(0).getTitle());
         assertEquals("Task 2", userTasks.get(1).getTitle());
+    }
+    @Test
+    @DisplayName("Find tasks by Assignee")
+    void testFindTasksByAssignee() 
+    {
+        User creator = new User();
+        creator.setUsername("creator");
+        creator.setEmail("creator@example.com");
+        creator.setPassword("pass123");
+        creator = userRepository.save(creator);
+
+        User assignee = new User();
+        assignee.setUsername("assignee");
+        assignee.setEmail("assignee@example.com");
+        assignee.setPassword("pass456");
+        assignee = userRepository.save(assignee);
+
+        Category category = new Category();
+        category.setName("Assigned Work");
+        category = categoryRepository.save(category);
+
+        Task task = new Task();
+        task.setTitle("Assigned Task");
+        task.setDescription("Assigned to another user");
+        task.setProgress(50);
+        task.setCreationDate(LocalDateTime.now());
+        task.setDueDate(LocalDateTime.now().plusDays(3));
+        task.setUser(creator);
+        task.setAssignee(assignee);
+        task.setCategory(category);
+        taskRepository.save(task);
+
+        List<Task> tasksAssigned = taskRepository.findByAssignee(assignee);
+
+        assertNotNull(tasksAssigned);
+        assertEquals(1, tasksAssigned.size());
+        assertEquals("Assigned Task", tasksAssigned.get(0).getTitle());
+    }
+
+    @Test
+    @DisplayName("Find tasks by Category")
+    void testFindTasksByCategory() 
+    {
+        User user = new User();
+        user.setUsername("catuser");
+        user.setEmail("catuser@example.com");
+        user.setPassword("catpass");
+        user = userRepository.save(user);
+
+        Category category = new Category();
+        category.setName("Urgent");
+        category = categoryRepository.save(category);
+
+        Task task = new Task();
+        task.setTitle("Urgent Task");
+        task.setDescription("This task is urgent");
+        task.setProgress(20);
+        task.setCreationDate(LocalDateTime.now());
+        task.setDueDate(LocalDateTime.now().plusDays(1));
+        task.setUser(user);
+        task.setAssignee(user);
+        task.setCategory(category);
+        taskRepository.save(task);
+
+        List<Task> tasksByCategory = taskRepository.findByCategory(category);
+
+        assertNotNull(tasksByCategory);
+        assertEquals(1, tasksByCategory.size());
+        assertEquals("Urgent Task", tasksByCategory.get(0).getTitle());
     }
 }

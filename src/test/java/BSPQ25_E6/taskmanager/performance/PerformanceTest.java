@@ -1,7 +1,10 @@
 package BSPQ25_E6.taskmanager.performance;
 
+import com.github.noconnor.junitperf.JUnitPerfReportingConfig;
 import com.github.noconnor.junitperf.JUnitPerfTest;
+import com.github.noconnor.junitperf.JUnitPerfTestActiveConfig;
 import com.github.noconnor.junitperf.JUnitPerfTestRequirement;
+import com.github.noconnor.junitperf.reporting.providers.HtmlReportGenerator;
 
 import BSPQ25_E6.taskmanager.service.UserService;
 import BSPQ25_E6.taskmanager.service.ProjectService;
@@ -14,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import com.github.noconnor.junitperf.reporting.providers.HtmlReportGenerator;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -28,7 +32,12 @@ public class PerformanceTest
 
     @Autowired
     private TaskService taskService;
-
+    @JUnitPerfTestActiveConfig
+    private static final com.github.noconnor.junitperf.JUnitPerfReportingConfig PERF_CONFIG =
+            com.github.noconnor.junitperf.JUnitPerfReportingConfig.builder()
+                    .reportGenerator(new HtmlReportGenerator(System.getProperty("user.dir") + "/target/reports/duration-perf-report.html"))
+                    .build();
+            
     @BeforeEach
     void setup() 
     {  
