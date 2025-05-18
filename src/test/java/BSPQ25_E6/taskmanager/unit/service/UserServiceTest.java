@@ -1,4 +1,4 @@
-package BSPQ25_E6.taskmanager.service;
+package BSPQ25_E6.taskmanager.unit.service;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import BSPQ25_E6.taskmanager.model.User;
 import BSPQ25_E6.taskmanager.repository.UserRepository;
+import BSPQ25_E6.taskmanager.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

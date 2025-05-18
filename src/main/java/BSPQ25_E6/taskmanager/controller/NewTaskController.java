@@ -79,29 +79,6 @@ public class NewTaskController
         Optional<User> assignee = userRepository.findById(assigneeID);
         assignee.ifPresent(task::setAssignee);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         if (categoryId.equals("new") && newCategory != null && !newCategory.isEmpty()) {
             Category category = new Category();
             category.setName(newCategory);
@@ -122,19 +99,6 @@ public class NewTaskController
         task.setUser(user);
 
         taskRepository.save(task);
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         return "redirect:/dashboard";
 

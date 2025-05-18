@@ -1,4 +1,4 @@
-package BSPQ25_E6.taskmanager.repository;
+package BSPQ25_E6.taskmanager.unit.repository;
 
 import BSPQ25_E6.taskmanager.model.Task;
 import BSPQ25_E6.taskmanager.model.User;
@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import BSPQ25_E6.taskmanager.repository.TaskRepository;
+import BSPQ25_E6.taskmanager.repository.UserRepository;
+import BSPQ25_E6.taskmanager.repository.CategoryRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;

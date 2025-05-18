@@ -1,8 +1,9 @@
-package BSPQ25_E6.taskmanager.service;
+package BSPQ25_E6.taskmanager.unit.service;
 
 import BSPQ25_E6.taskmanager.model.Task;
 import BSPQ25_E6.taskmanager.model.User;
 import BSPQ25_E6.taskmanager.repository.TaskRepository;
+import BSPQ25_E6.taskmanager.service.TaskService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
