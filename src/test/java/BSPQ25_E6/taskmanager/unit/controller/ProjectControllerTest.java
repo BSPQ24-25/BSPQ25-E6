@@ -23,7 +23,11 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class ProjectControllerTest 
 {
+	
+	@Mock
+	private org.springframework.ui.Model model;
 
+	
     @Mock
     private ProjectRepository projectRepository;
 
@@ -35,7 +39,7 @@ public class ProjectControllerTest
 
     private User sampleUser;
     private Project sampleProject;
-
+    
     @BeforeEach
     void setup() 
     {
@@ -46,18 +50,18 @@ public class ProjectControllerTest
         sampleProject = new Project("Test Project", "Description");
         sampleProject.setUsers(new HashSet<>());
     }
-
+    
     @Test
-    void testCreateProject_Success() 
-    {
+    void testCreateProject_Success() {
         when(projectRepository.save(sampleProject)).thenReturn(sampleProject);
 
-        Project result = projectController.createProject(sampleProject);
+        String result = projectController.createProject(sampleProject, model);
 
-        assertNotNull(result);
-        assertEquals("Test Project", result.getName());
+        assertEquals("redirect:/projects", result); 
         verify(projectRepository, times(1)).save(sampleProject);
+        verify(model).addAttribute("success", "Project created successfully!");
     }
+
 
     @Test
     void testAddUserToProject_Success() 

@@ -29,6 +29,10 @@ public class Task {
     @ManyToOne(optional = false)
     @JoinColumn(name = "category", nullable = false)
     private Category category;
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "project", nullable = false)
+    private Project project;
 
     public Task() {}
 
@@ -62,4 +66,12 @@ public class Task {
 
     public Category getCategory() { return category; }
     public void setCategory(Category category) { this.category = category; }
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
 }

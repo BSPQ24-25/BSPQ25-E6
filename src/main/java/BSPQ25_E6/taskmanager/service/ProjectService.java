@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,6 +32,21 @@ public class ProjectService
     public Optional<Project> getProjectById(Long projectId) 
     {
         return projectRepository.findById(projectId);
+    }
+    public Optional<List<Project>> getUsersProjects(Long userId){
+    	
+    	List<Project> userProjects = new ArrayList<>();
+
+    	for (Project project: projectRepository.findAll()) {
+    		Set<User> users = project.getUsers();
+    		User user =  userRepository.findById(userId).orElse(null);
+    		if (project.getOwner().getId()==userId) {
+    			userProjects.add(project);
+    		}else if(users.contains(user)) {
+    			userProjects.add(project);
+    		}
+    	}
+    	return Optional.ofNullable(userProjects);
     }
 
     // assgin a user to a project

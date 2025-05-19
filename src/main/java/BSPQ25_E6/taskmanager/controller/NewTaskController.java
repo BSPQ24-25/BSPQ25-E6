@@ -4,6 +4,7 @@ import BSPQ25_E6.taskmanager.model.Category;
 import BSPQ25_E6.taskmanager.model.Task;
 import BSPQ25_E6.taskmanager.model.User;
 import BSPQ25_E6.taskmanager.repository.CategoryRepository;
+import BSPQ25_E6.taskmanager.repository.ProjectRepository;
 import BSPQ25_E6.taskmanager.repository.TaskRepository;
 import BSPQ25_E6.taskmanager.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
@@ -19,7 +20,8 @@ import java.util.Optional;
 @RequestMapping("/tasks")
 public class NewTaskController 
 {
-
+	 @Autowired
+	private ProjectRepository projectRepository;
     @Autowired
     private TaskRepository taskRepository;
     @Autowired
@@ -41,6 +43,27 @@ public class NewTaskController
         model.addAttribute("categories", categoryRepository.findAll());
         return "newTask";
     }
+    @GetMapping("/create")
+    public String showCreateTaskForm(@RequestParam Long projectId, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        // Verificar si el proyecto existe
+        if (!projectRepository.existsById(projectId)) {
+            return "redirect:/dashboard"; // o muestra un mensaje de error si prefieres
+        }
+
+        Task task = new Task();
+        task.setProject(projectRepository.findById(projectId).orElse(null)); // lo pasamos por si quieres mostrar el nombre del proyecto en el form
+
+        model.addAttribute("task", task);
+        model.addAttribute("projectId", projectId); // para incluirlo como campo oculto en el form
+        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("categories", categoryRepository.findAll());
+        return "newTask";
+    }
 
 
     @PostMapping("/create")
@@ -50,6 +73,7 @@ public class NewTaskController
                               @RequestParam("assigneeID") Long assigneeID,
                               @RequestParam String categoryId,
                               @RequestParam(required = false) String newCategory,
+                              @RequestParam Long projectId,
                               HttpSession session,
                               Model model) {
 
@@ -76,6 +100,7 @@ public class NewTaskController
         task.setProgress(0);
         task.setCreationDate(LocalDateTime.now());
         task.setDueDate(LocalDateTime.parse(dueDate + "T00:00:00"));
+        task.setProject(projectRepository.findById(projectId).orElse(null));
         Optional<User> assignee = userRepository.findById(assigneeID);
         assignee.ifPresent(task::setAssignee);
 

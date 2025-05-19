@@ -10,11 +10,13 @@ import BSPQ25_E6.taskmanager.model.Task;
 import BSPQ25_E6.taskmanager.model.User;
 import BSPQ25_E6.taskmanager.repository.CategoryRepository;
 import BSPQ25_E6.taskmanager.repository.TaskRepository;
+import BSPQ25_E6.taskmanager.service.TaskService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class DashboardController {
@@ -25,7 +27,16 @@ public class DashboardController {
     @SuppressWarnings("unused")
     @Autowired
     private CategoryRepository categoryRepository;
-
+    
+    @Autowired
+    private TaskService taskService; 
+    
+    @Autowired  // importante para que Spring lo inyecte
+    public DashboardController(TaskRepository taskRepository,TaskService taskService) {
+        this.taskRepository = taskRepository;
+        this.taskService=taskService;
+    }
+    
     @GetMapping("/dashboard")
     public String showDashboard(HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
@@ -95,9 +106,13 @@ public class DashboardController {
 
         return "dashboard"; 
     }
-
-
-
+    @GetMapping("/dashboard/{projectId}")
+    public String getTasksByProject(@PathVariable Long projectId, Model model) {
+        List<Task> tasks = taskService.findTasksByProjectId(projectId);
+        model.addAttribute("tasks", tasks);
+        model.addAttribute("projectId", projectId);
+        return "dashboard";  // nombre del template Thymeleaf (dashboard.html)
+    }
 
 
 
