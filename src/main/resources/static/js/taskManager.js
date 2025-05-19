@@ -1,5 +1,12 @@
 document.addEventListener('DOMContentLoaded', (event) => {
-
+    // En el evento DOMContentLoaded
+    const editBtn = document.querySelector('.btn-edit');
+    if (editBtn) {
+        editBtn.addEventListener('click', function() {
+            const taskId = this.closest('.task-actions').getAttribute('data-task-id');
+            window.location.href = `/taskDetail/edit/${taskId}`;
+        });
+    }
     var dragSrcEl = null;
     
     function handleDragStart(e) {
