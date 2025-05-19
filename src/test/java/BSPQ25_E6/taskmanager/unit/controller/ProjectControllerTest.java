@@ -55,12 +55,13 @@ public class ProjectControllerTest
     void testCreateProject_Success() {
         when(projectRepository.save(sampleProject)).thenReturn(sampleProject);
 
-        String result = projectController.createProject(sampleProject, model);
+        String result = projectController.createProjectWeb(sampleProject, model);
 
         assertEquals("redirect:/projects", result); 
         verify(projectRepository, times(1)).save(sampleProject);
         verify(model).addAttribute("success", "Project created successfully!");
     }
+
 
 
     @Test

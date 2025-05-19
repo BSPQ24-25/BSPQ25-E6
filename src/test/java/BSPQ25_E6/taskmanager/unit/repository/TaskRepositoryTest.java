@@ -3,6 +3,8 @@ package BSPQ25_E6.taskmanager.unit.repository;
 import BSPQ25_E6.taskmanager.model.Task;
 import BSPQ25_E6.taskmanager.model.User;
 import BSPQ25_E6.taskmanager.model.Category;
+import BSPQ25_E6.taskmanager.model.Project;
+import BSPQ25_E6.taskmanager.repository.ProjectRepository;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,25 +34,32 @@ class TaskRepositoryTest
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private ProjectRepository projectRepository;
+
     @AfterEach
     void cleanUp() 
     {
         taskRepository.deleteAll();
+        projectRepository.deleteAll();
         userRepository.deleteAll();
         categoryRepository.deleteAll();
+        
     }
-
 
     @Test
     @DisplayName("Save a Task and verify it is stored correctly")
     void testSaveTask() 
     {
-        User user = new User("testuser", "testuser@example.com", "password123");
-        user = userRepository.save(user);
+        User user = userRepository.save(new User("testuser", "testuser@example.com", "password123"));
 
         Category category = new Category();
         category.setName("Test Category");
         category = categoryRepository.save(category);
+
+        Project project = new Project();
+        project.setName("Test Project");
+        project = projectRepository.save(project);
 
         Task task = new Task();
         task.setTitle("Test Task Title");
@@ -61,6 +70,7 @@ class TaskRepositoryTest
         task.setUser(user);
         task.setAssignee(user);
         task.setCategory(category);
+        task.setProject(project);
 
         Task savedTask = taskRepository.save(task);
 
@@ -77,12 +87,15 @@ class TaskRepositoryTest
     @DisplayName("Find tasks by User")
     void testFindTasksByUser() 
     {
-        User user = new User("finduser", "finduser@example.com", "password456");
-        user = userRepository.save(user);
+        User user = userRepository.save(new User("finduser", "finduser@example.com", "password456"));
 
         Category category = new Category();
         category.setName("Find Category");
         category = categoryRepository.save(category);
+
+        Project project = new Project();
+        project.setName("User Project");
+        project = projectRepository.save(project);
 
         Task task1 = new Task();
         task1.setTitle("Task 1");
@@ -93,6 +106,7 @@ class TaskRepositoryTest
         task1.setUser(user);
         task1.setAssignee(user);
         task1.setCategory(category);
+        task1.setProject(project);
         taskRepository.save(task1);
 
         Task task2 = new Task();
@@ -104,6 +118,7 @@ class TaskRepositoryTest
         task2.setUser(user);
         task2.setAssignee(user);
         task2.setCategory(category);
+        task2.setProject(project);
         taskRepository.save(task2);
 
         List<Task> userTasks = taskRepository.findByUser(user);
@@ -118,15 +133,16 @@ class TaskRepositoryTest
     @DisplayName("Find tasks by Assignee")
     void testFindTasksByAssignee() 
     {
-        User creator = new User("creator", "creator@example.com", "pass123");
-        creator = userRepository.save(creator);
-
-        User assignee = new User("assignee", "assignee@example.com", "pass456");
-        assignee = userRepository.save(assignee);
+        User creator = userRepository.save(new User("creator", "creator@example.com", "pass123"));
+        User assignee = userRepository.save(new User("assignee", "assignee@example.com", "pass456"));
 
         Category category = new Category();
         category.setName("Assigned Work");
         category = categoryRepository.save(category);
+
+        Project project = new Project();
+        project.setName("Assigned Project");
+        project = projectRepository.save(project);
 
         Task task = new Task();
         task.setTitle("Assigned Task");
@@ -137,6 +153,7 @@ class TaskRepositoryTest
         task.setUser(creator);
         task.setAssignee(assignee);
         task.setCategory(category);
+        task.setProject(project);
         taskRepository.save(task);
 
         List<Task> tasksAssigned = taskRepository.findByAssignee(assignee);
@@ -150,12 +167,15 @@ class TaskRepositoryTest
     @DisplayName("Find tasks by Category")
     void testFindTasksByCategory() 
     {
-        User user = new User("catuser", "catuser@example.com", "catpass");
-        user = userRepository.save(user);
+        User user = userRepository.save(new User("catuser", "catuser@example.com", "catpass"));
 
         Category category = new Category();
         category.setName("Urgent");
         category = categoryRepository.save(category);
+
+        Project project = new Project();
+        project.setName("Urgent Project");
+        project = projectRepository.save(project);
 
         Task task = new Task();
         task.setTitle("Urgent Task");
@@ -166,6 +186,7 @@ class TaskRepositoryTest
         task.setUser(user);
         task.setAssignee(user);
         task.setCategory(category);
+        task.setProject(project);
         taskRepository.save(task);
 
         List<Task> tasksByCategory = taskRepository.findByCategory(category);

@@ -2,6 +2,7 @@ package BSPQ25_E6.taskmanager.controller;
 
 import BSPQ25_E6.taskmanager.model.Project;
 import BSPQ25_E6.taskmanager.model.Task;
+import BSPQ25_E6.taskmanager.dto.ProjectRequestDTO;
 import BSPQ25_E6.taskmanager.model.User;
 import BSPQ25_E6.taskmanager.repository.ProjectRepository;
 import BSPQ25_E6.taskmanager.repository.UserRepository;
@@ -17,68 +18,79 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-
 @Controller
 @RequestMapping("/projects")
-public class ProjectController 
-{
-	private ProjectService projectService;
-    @Autowired
-    private ProjectRepository projectRepository;
+public class ProjectController {
+
+    private final ProjectService projectService;
+    private final ProjectRepository projectRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    public ProjectController(ProjectService projectService, ProjectRepository projectRepository,UserRepository userRepository) {
+    public ProjectController(ProjectService projectService,
+                             ProjectRepository projectRepository,
+                             UserRepository userRepository) {
         this.projectService = projectService;
-        this.projectRepository=projectRepository;
-        this.userRepository=userRepository;
+        this.projectRepository = projectRepository;
+        this.userRepository = userRepository;
     }
-    
+
     @GetMapping("")
-    public String projects(HttpSession session, Model model) 
-    {
-    	
+    public String projects(HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
-        System.out.print(user.getId());
-        if (user == null) 
-        {
+        if (user == null) {
             return "redirect:/login";
-        }else {
-        	List<Project> projects = projectService.getUsersProjects(user.getId()).orElse(null);
+        } else {
+            List<Project> projects = projectService.getUsersProjects(user.getId()).orElse(null);
             model.addAttribute("projects", projects);
         }
-        
         return "projects";
     }
- 
+
     @GetMapping("/new")
     public String newProjectForm(Model model) {
-        
         model.addAttribute("project", new Project());
         model.addAttribute("users", userRepository.findAll());
-        return "newProject"; 
-    }
-    @PostMapping("/create")
-    public String createProject(@ModelAttribute Project project, Model model) {
-        // guardar el proyecto
-        projectRepository.save(project);
-        model.addAttribute("success", "Project created successfully!");
-        return "redirect:/projects"; // o donde quieras
+        return "newProject";
     }
 
-    //get prouject by id
+    /**
+     * ✅ Usado desde el formulario web
+     */
+    @PostMapping("/create")
+    public String createProjectWeb(@ModelAttribute Project project, Model model) {
+        projectRepository.save(project);
+        model.addAttribute("success", "Project created successfully!");
+        return "redirect:/projects";
+    }
+
+    /**
+     * ✅ Usado desde integración/API REST
+     */
+    @PostMapping(path = "/create", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<Project> createProjectAPI(@RequestBody ProjectRequestDTO dto) {
+        Optional<User> ownerOpt = userRepository.findById(dto.getOwnerId());
+        if (ownerOpt.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Project project = new Project();
+        project.setName(dto.getName());
+        project.setDescription(dto.getDescription());
+        project.setOwner(ownerOpt.get());
+
+        Project saved = projectRepository.save(project);
+        return ResponseEntity.ok(saved);
+    }
+
     @GetMapping("/all")
-    public List<Project> getAllProjects() 
-    {
+    public List<Project> getAllProjects() {
         return projectRepository.findAll();
     }
 
-    //and assign user to project
     @PostMapping("/{projectId}/addUser/{userId}")
     public ResponseEntity<String> addUserToProject(@PathVariable Long projectId, @PathVariable Long userId) {
-
         Optional<Project> optionalProject = projectRepository.findById(projectId);
         Optional<User> optionalUser = userRepository.findById(userId);
 
@@ -97,11 +109,11 @@ public class ProjectController
 
         return ResponseEntity.status(404).body("User or project not found");
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<Project> getProjectById(@PathVariable Long id) {
         Optional<Project> optionalProject = projectRepository.findById(id);
         return optionalProject.map(ResponseEntity::ok)
-                            .orElseGet(() -> ResponseEntity.notFound().build());
+                              .orElseGet(() -> ResponseEntity.notFound().build());
     }
-
 }
