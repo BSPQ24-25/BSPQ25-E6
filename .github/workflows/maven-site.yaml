@@ -1,0 +1,144 @@
+name: Maven Site Documentation
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: '0 1 * * *'  # Se ejecuta diariamente a la 1:00 UTC
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven  # Optimización: usa la característica de caché incorporada
+
+      - name: Install Doxygen
+        run: sudo apt-get update && sudo apt-get install -y doxygen graphviz
+
+      # Si tu proyecto tiene pruebas de integración y rendimiento
+      - name: Run Unit tests and generate coverage report
+        run: mvn test jacoco:report
+      
+      - name: Run Integration Tests (si existen)
+        run: |
+          if grep -q "<id>integration" pom.xml; then
+            mvn -Pintegration integration-test
+          else
+            echo "Integration tests not configured, skipping"
+          fi
+        continue-on-error: true
+
+      - name: Run Performance Tests (si existen)
+        run: |
+          if grep -q "<id>performance" pom.xml; then
+            mvn -Pperformance integration-test
+          else
+            echo "Performance tests not configured, skipping"
+          fi
+        continue-on-error: true
+
+      - name: Generate Maven Site
+        run: mvn site
+      
+      - name: Generate Doxygen documentation
+        run: |
+          if [ -f "Doxyfile" ]; then
+            doxygen Doxyfile
+          else
+            echo "Doxyfile not found, skipping Doxygen documentation"
+          fi
+        continue-on-error: true
+
+      - name: Install pandoc
+        run: sudo apt-get update && sudo apt-get install -y pandoc
+
+      - name: Prepare documentation structure
+        run: |
+          mkdir -p docs/site
+          mkdir -p docs/doxygen
+          mkdir -p docs/perf
+          mkdir -p docs/jacoco
+          
+          # Copiar Maven site, si existe
+          cp -r target/site/* docs/site/ || echo "No Maven site generated"
+          
+          # Copiar Doxygen docs si existen
+          if [ -d "target/doxygen" ]; then
+            cp -r target/doxygen/* docs/doxygen/
+          elif [ -d "docs/html" ]; then
+            cp -r docs/html/* docs/doxygen/
+          else
+            echo "No Doxygen docs found"
+          fi
+          
+          # Copiar reportes de rendimiento si existen
+          if [ -d "target/reports" ]; then
+            cp -r target/reports/* docs/perf/
+          elif [ -d "performance-reports" ]; then
+            cp -r performance-reports/* docs/perf/
+          else
+            echo "No performance reports found"
+          fi
+          
+          # Copiar informes JaCoCo
+          cp -r target/site/jacoco/* docs/jacoco/ || echo "No JaCoCo reports found"
+          
+          # Crear índice principal
+          cat > docs/index.html << 'EOL'
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>Project Documentation</title>
+            <style>
+              body { font-family: Arial, sans-serif; margin: 0; padding: 20px; line-height: 1.6; }
+              .container { max-width: 800px; margin: 0 auto; }
+              h1 { color: #2c3e50; }
+              .navigation { background-color: #f8f9fa; padding: 15px; border-radius: 4px; margin-bottom: 20px; }
+              .navigation a { margin-right: 15px; text-decoration: none; color: #3498db; }
+              .navigation a:hover { text-decoration: underline; }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <h1>Project Documentation</h1>
+              <div class="navigation">
+                <a href="./site/">Maven Site</a>
+                <a href="./doxygen/">API Documentation</a>
+                <a href="./jacoco/">Code Coverage</a>
+                <a href="./perf/">Performance Reports</a>
+              </div>
+              <p>Welcome to the project documentation page. Please use the links above to navigate through different sections.</p>
+            </div>
+          </body>
+          </html>
+          EOL
+
+      - name: Disable Jekyll on GitHub Pages
+        run: touch docs/.nojekyll
+
+      - name: Upload documentation as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation
+          path: docs/
+          retention-days: 5
+
+      - name: Commit and push docs to main branch
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add -f docs
+          git commit -m "Update documentation [CI skip]" || echo "No changes to commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
