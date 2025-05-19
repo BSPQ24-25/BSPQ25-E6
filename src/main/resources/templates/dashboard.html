@@ -11,6 +11,7 @@
     <div class="auth-buttons">
         <a href="/logout">Logout</a>
         <a th:text="${session.user.username}"></a>
+        <a href="/projects">Projects</a>
     </div>
     <div class='app'>
         <main class='project'>
@@ -18,9 +19,8 @@
                 <h1>Task Manager</h1>
                 <div class="button-group">
                     <div class='new-task-button'>
-                        <a href="/tasks/new" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Add New Task
-                        </a>
+                        <a th:href="@{/tasks/create(projectId=${projectId})}">Add New Task</a>
+
                     </div>
                     <div class="inbox-button">
                         <a href="http://localhost:8080/inbox" class="btn btn-primary">

@@ -3,6 +3,7 @@ package BSPQ25_E6.taskmanager.unit.controller;
 import BSPQ25_E6.taskmanager.model.Category;
 import BSPQ25_E6.taskmanager.model.User;
 import BSPQ25_E6.taskmanager.repository.CategoryRepository;
+import BSPQ25_E6.taskmanager.repository.ProjectRepository;
 import BSPQ25_E6.taskmanager.repository.TaskRepository;
 import BSPQ25_E6.taskmanager.repository.UserRepository;
 import BSPQ25_E6.taskmanager.controller.NewTaskController;
@@ -38,6 +39,9 @@ class NewTaskControllerTest
     @Mock
     private CategoryRepository categoryRepository;
 
+    @Mock
+    private ProjectRepository projectRepository;
+    
     @Mock
     private TaskRepository taskRepository;
 
@@ -93,6 +97,7 @@ class NewTaskControllerTest
                 2L,
                 "1",
                 "",
+                10L,
                 session,
                 model
         );
@@ -110,7 +115,7 @@ class NewTaskControllerTest
         String result = newTaskController.createTask(
                 "", "Desc",
                 LocalDateTime.now().toLocalDate().toString(),
-                2L, "1", "", session, model
+                2L, "1", "", 10L,session, model
         );
 
         assertEquals("newTask", result);

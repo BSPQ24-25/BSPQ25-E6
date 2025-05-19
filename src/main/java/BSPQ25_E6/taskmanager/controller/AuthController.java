@@ -42,7 +42,7 @@ public class AuthController
             if (password.equals(user.getPassword())) {
             	System.out.print("Logged in User: "+user.getEmail());
             	session.setAttribute("user", user);
-                return "redirect:/dashboard";
+                return "redirect:/projects";
             }
         }
         model.addAttribute("error", "Credenciales inválidas");
