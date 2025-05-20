@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>📋 Sign Up | TaskManager</title>
+    <link rel="stylesheet" href="/css/taskManager.css">
+</head>
+<body class="app">
+    <div class="auth-container">
+        <h2>Sign Up</h2>
+        <form method="post" action="/signup">
+            <input type="text" name="username" placeholder="Username" required />
+            <input type="email" name="email" placeholder="Email" required />
+            <input type="password" name="password" placeholder="Password" required />
+            <button type="submit">Sign Up</button>
+        </form>
+        <p th:text="${error}"></p>
+        <p th:text="${success}"></p>
+        <a href="/login">Already have an account? Log in</a>
+    </div>
+</body>
+</html>
