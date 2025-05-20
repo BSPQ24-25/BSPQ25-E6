@@ -25,7 +25,7 @@ jobs:
         cache: maven  # Optimización: usa la característica de caché incorporada
 
     - name: Build with Maven
-      run: mvn clean verify
+      run: mvn clean verify -Dspring.profiles.active=test
 
     - name: Generate JaCoCo Report
       run: mvn jacoco:report
