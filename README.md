@@ -3,7 +3,7 @@
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/BSPQ24-25/BSPQ25-E6)
 [![Coverage](https://img.shields.io/badge/coverage-50%25-yellow)](https://github.com/BSPQ24-25/BSPQ25-E6)
 [![Java](https://img.shields.io/badge/Java-8%2B-orange)](https://www.oracle.com/java/)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7%2B-green)](https://spring.io/projects/spring-boot)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2%2B-green)](https://spring.io/projects/spring-boot)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0%2B-blue)](https://www.mysql.com/)
 [![Docker](https://img.shields.io/badge/Docker-supported-blue)](https://www.docker.com/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -59,7 +59,6 @@ http://localhost:8080
 ### 👥 **User Roles**
 - **Team Members**: Create, modify and track individual tasks
 - **Project Managers**: Oversee task assignments and project delivery
-- **Freelancers**: Collaborate with teams on specific project tasks
 
 ### 📱 **User Interface**
 - **Login Screen**: Secure authentication system
@@ -74,12 +73,14 @@ http://localhost:8080
 ```mermaid
 graph TB
     Frontend[JavaScript Frontend] --> API[Spring Boot REST API]
-    API --> Auth[Authentication Service]
+    API --> CategoryService[Category Management Service]
     API --> TaskService[Task Management Service]
     API --> ProjectService[Project Management Service]
-    TaskService --> DB[(MySQL Database)]
+    API --> UserService[User Management Service]
+    CategoryService --> DB[(MySQL Database)]
+    TaskService --> DB
     ProjectService --> DB
-    Auth --> DB
+    UserService --> DB
     
     subgraph "Data Model"
         Users[Users Table]
@@ -94,13 +95,14 @@ graph TB
     DB --> Categories
 ```
 
-| Component | Technology | Description |
-|-----------|------------|-------------|
-| **Frontend** | JavaScript | Dynamic and responsive user interface |
-| **Backend** | Spring Boot | RESTful API for task management |
-| **Database** | MySQL | User, task, and project data storage |
-| **Authentication** | Spring Security | Secure user authentication and authorization |
-| **Build Tool** | Maven | Dependency management and build automation |
+| Layer | Technology | Purpose |
+|-------|------------|---------|
+| **Frontend** | Vanilla JavaScript | Dynamic and responsive user interface |
+| **Backend** | Spring Boot 3.2+ | RESTful API with business logic |
+| **Database** | MySQL 8.0+ | Persistent data storage |
+| **Security** | Spring Security | Authentication and authorization |
+| **Build** | Maven | Dependency management and build automation |
+| **Testing** | JUnit 5 + Mockito | Comprehensive testing framework |
 
 ### 📊 Data Model
 
@@ -187,36 +189,54 @@ docker run -p 8080:8080 --link taskmanager-db:db taskmanager-app
 
 #### Authentication
 ```http
-POST /api/auth/login
-POST /api/auth/register
-POST /api/auth/logout
+POST /login
+POST /signup
+POST /users/register
+GET /logout
 ```
 
-#### Projects
+#### Dashboard
 ```http
-GET    /api/projects          # List user projects
-POST   /api/projects          # Create new project
-GET    /api/projects/{id}     # Get project details
-PUT    /api/projects/{id}     # Update project
-DELETE /api/projects/{id}     # Delete project
+GET   /dashboard
+GET   /dashboard/{projectId}
 ```
 
-#### Tasks
+#### Home
 ```http
-GET    /api/tasks             # List tasks
-POST   /api/tasks             # Create new task
-GET    /api/tasks/{id}        # Get task details
-PUT    /api/tasks/{id}        # Update task
-DELETE /api/tasks/{id}        # Delete task
-PUT    /api/tasks/{id}/status # Update task status
+GET   /home
 ```
 
-#### Users
+#### Inbox
 ```http
-GET    /api/users             # List users
-GET    /api/users/{id}        # Get user details
-PUT    /api/users/{id}        # Update user profile
+GET   /inbox
 ```
+
+#### New Task
+```http
+GET    /tasks/new
+GET    /tasks/create
+POST   /tasks/create
+```
+
+#### Project
+```http
+GET    /projects
+GET    /projects/new
+GET    /projects/all
+GET    /projects/{projectId}
+POST   /projects/create
+POST   /projects/{projectId}/addUser/{userId}
+POST   /taskDetail/delete/{projectId}
+```
+
+#### Task Details
+```http
+GET    /taskDetail/{taskId}
+GET    /taskDetail/edit/{taskId}
+POST   /taskDetail/update/{taskId}
+POST   /taskDetail/delete/{taskId}
+```
+
 
 </details>
 
@@ -255,24 +275,21 @@ mvn -Pperformance integration-test
 
 ### Quality Reports
 
-- **Coverage Report**: `target/site/jacoco/index.html`
-- **Surefire Report**: `target/site/surefire-report.html`
-- **Performance Reports**: `target/contiperf-reports/`
-- **API Documentation**: `target/generated-docs/api-docs.html`
+- **Integration Report**: `target/reports/jacoco/index.html`
+- **Surefire Report**: `target/reports/surefire-report.html`
+- **Performance Reports**: `target/reports/contiperf-reports/`
 
 ## 🔄 Continuous Integration
 
-### Jenkins Pipeline
+### GitHub Actions Pipeline
 
-Our Jenkins setup provides:
+Our GitHub Actions setup provides:
 
 ✅ **Automated builds** on every commit  
 ✅ **Test execution** (unit + integration + API)  
 ✅ **Quality gates** with coverage thresholds  
 ✅ **Database migration** testing  
 ✅ **Docker image** generation and deployment  
-
-**Dashboard**: [JENKINS_URL_IF_AVAILABLE]
 
 ### Build Status
 
@@ -285,18 +302,14 @@ Our Jenkins setup provides:
 
 ### 📖 Technical Documentation
 
-- **🌐 [Complete Documentation](https://bspq24-25.github.io/BSPQ25-E6/)** - Comprehensive project documentation
-- **📋 [API Reference](https://bspq24-25.github.io/BSPQ25-E6/api/)** - REST API documentation
-- **🔧 [Developer Guide](docs/developer-guide.md)** - Setup and development guidelines
-- **🧪 [Testing Guide](docs/testing-guide.md)** - Testing strategies and best practices
-- **🐳 [Deployment Guide](docs/deployment-guide.md)** - Docker and cloud deployment
+- **📋 [Doxygen Documentation](BSPQ25-E6\target\site)** - REST API documentation
 
 ### 📊 Project Reports
 
-- **📈 [Maven Site](target/site/index.html)** - Complete project reports
-- **📋 [Test Reports](target/site/surefire-report.html)** - JUnit test results
-- **📊 [Coverage Reports](target/site/jacoco/index.html)** - Code coverage analysis
-- **⚡ [Performance Reports](target/contiperf-reports/)** - Performance test results
+- **📈 [Maven Site](target/reports/index.html)** - Complete project reports
+- **📋 [Test Reports](target/reports/surefire-report.html)** - JUnit test results
+- **📊 [Coverage Reports](target/reports/jacoco/index.html)** - Code coverage analysis
+- **⚡ [Performance Reports](target/reports/contiperf-reports/)** - Performance test results
 
 ## 📊 Development Methodology
 
@@ -305,12 +318,28 @@ Our Jenkins setup provides:
 | Role | Sprint 1 | Sprint 2 | Sprint 3 |
 |------|----------|----------|----------|
 | **Product Owner** | Diego Ramirez | Diego Ramirez | Diego Ramirez |
-| **Scrum Master** | Iker Cubillo | Jon Mendizabal | Inigo Calderon |
+| **Scrum Master** | Dylan Thomas Mechella | Dylan Thomas Mechella | Iker Cubillo |
 
 ### 📈 Sprint Overview
 
 <details>
-<summary><strong>🎯 Sprint 1 - Core Backend & Authentication</strong></summary>
+<summary><strong>🧪 Sprint 1 - Frontend Development & Testing</strong></summary>
+
+**Goal**: Complete frontend implementation
+
+**Deliverables**:
+- Complete JavaScript frontend (Project Dashboard, Task Management)
+- Task assignment and progress tracking functionality
+- Category management system
+- Basic frontend login interface
+
+**Tag**: [`v1.0`](https://github.com/BSPQ24-25/BSPQ25-E6/releases/tag/v2.0)
+
+</details>
+
+
+<details>
+<summary><strong>🎯 Sprint 2 - Core Backend, Authentication  and comprehensive testing</strong></summary>
 
 **Goal**: Implement basic Spring Boot API with user authentication and core entities
 
@@ -319,28 +348,13 @@ Our Jenkins setup provides:
 - User authentication and registration
 - Basic CRUD operations for Users, Projects, Tasks, Categories
 - MySQL database integration
-- Basic frontend login interface
 - Initial unit testing framework
-
-**Tag**: [`v1.0`](https://github.com/BSPQ24-25/BSPQ25-E6/releases/tag/v1.0)
-
-</details>
-
-<details>
-<summary><strong>🧪 Sprint 2 - Frontend Development & Testing</strong></summary>
-
-**Goal**: Complete frontend implementation and comprehensive testing
-
-**Deliverables**:
-- Complete JavaScript frontend (Project Dashboard, Task Management)
-- Task assignment and progress tracking functionality
-- Category management system
 - Comprehensive unit tests (50% coverage minimum)
 - API integration tests
 - Performance testing with ContiPerf
 - Database performance profiling
 
-**Tag**: [`v2.0`](https://github.com/BSPQ24-25/BSPQ25-E6/releases/tag/v2.0)
+**Tag**: [`v2.0`](https://github.com/BSPQ24-25/BSPQ25-E6/releases/tag/v1.0)
 
 </details>
 
@@ -351,7 +365,7 @@ Our Jenkins setup provides:
 
 **Deliverables**:
 - Task editing and advanced filtering features
-- Jenkins CI/CD pipeline setup
+- GitHub Actions CI/CD pipeline setup
 - Comprehensive API documentation
 - Docker containerization
 - GitHub Pages documentation deployment
@@ -364,39 +378,46 @@ Our Jenkins setup provides:
 
 ### 🛠️ Management Tools
 
-- **📋 [YouTrack](https://youtrack.jetbrains.com/)** - Agile project management
-- **📊 Burndown Charts** - Sprint progress tracking
+- **📋 [GitHub projects](https://github.com/orgs/BSPQ24-25/projects/6)** - Agile project management
+- **📊 [GitHub insights](https://github.com/orgs/BSPQ24-25/projects/6/insights)** - Sprint progress tracking
 - **⏱️ Time Tracking** - Detailed effort recording per feature
 
 ## 📁 Project Structure
 
 ```
 BSPQ25-E6/
+├── 📂 .github/
+│   └── 📂 workflows/              # GitHub Actions CI/CD
 ├── 📂 src/
 │   ├── 📂 main/
-│   │   ├── 📂 java/
-│   │   │   ├── 📂 controller/         # 🎮 REST API Controllers
-│   │   │   ├── 📂 service/            # 🔧 Business Logic Services
-│   │   │   ├── 📂 repository/         # 💾 Data Access Layer
-│   │   │   ├── 📂 model/              # 📊 JPA Entity Models
-│   │   │   └── 📂 config/             # ⚙️  Spring Configuration
+│   │   ├── 📂 java/BSPQ25_E6/taskmanager/
+│   │   │   ├── 📂 config/         # Spring configuration classes
+│   │   │   ├── 📂 controller/     # REST API controllers
+│   │   │   ├── 📂 dto/            # Data Transfer Objects
+│   │   │   ├── 📂 model/          # JPA entity models
+│   │   │   ├── 📂 repository/     # Data access repositories
+│   │   │   └── 📂 service/        # Business logic services
 │   │   ├── 📂 resources/
-│   │   │   ├── 📂 static/             # 🌐 Frontend Assets (JS, CSS)
-│   │   │   ├── 📂 templates/          # 📄 HTML Templates
-│   │   │   └── 📄 application.properties # ⚙️ App Configuration
-│   │   └── 📂 webapp/                 # 🖥️  Web Application Files
-│   └── 📂 test/java/                  # 🧪 Test Suite
-│       ├── 📂 unit/                   # 🔬 Unit Tests
-│       ├── 📂 integration/            # 🔗 Integration Tests
-│       └── 📂 performance/            # ⚡ Performance Tests
-├── 📂 docs/                           # 📖 Documentation
-├── 📂 docker/                         # 🐳 Docker Configuration
-├── 📄 pom.xml                         # 🔧 Maven Configuration
-├── 📄 Dockerfile                      # 🐳 Container Setup
-├── 📄 docker-compose.yml              # 🐳 Multi-container Setup
-└── 📄 README.md                       # 📋 This File
+│   │   │   ├── 📂 static/         # Frontend assets (CSS, JS)
+│   │   │   │   ├── 📂 css/        # Stylesheets
+│   │   │   │   └── 📂 js/         # JavaScript files
+│   │   │   ├── 📂 templates/      # Thymeleaf templates
+│   │   │   └── 📄 application.properties # Configuration
+│   │   └── 📂 site/markdown/      # Documentation source
+│   └── 📂 test/java/BSPQ25_E6/taskmanager/
+│       ├── 📂 integration/        # Integration tests
+│       ├── 📂 performance/        # Performance tests
+│       └── 📂 unit/               # Unit tests
+│           ├── 📂 controller/     # Controller tests
+│           ├── 📂 repository/     # Repository tests
+│           └── 📂 service/        # Service tests
+├── 📂 target/                     # Maven build output
+├── 📂 data/                       # Database initialization scripts
+├── 📄 pom.xml                     # Maven configuration
+├── 📄 Dockerfile                  # Container configuration
+├── 📄 docker-compose.yml          # Multi-container setup
+└── 📄 README.md                   # This documentation
 ```
-
 ## 🐛 Troubleshooting
 
 <details>
@@ -441,7 +462,7 @@ mvn clean install
 # Verify static resources are accessible at /static/
 
 # Test API endpoints directly
-curl -X GET http://localhost:8080/api/projects
+curl -X GET http://localhost:8080/projects
 ```
 
 </details>
@@ -474,19 +495,19 @@ docker-compose logs db
 <td align="center">
 <img src="https://github.com/IkerCubillo.png" width="100px;"/><br />
 <b>Iker Cubillo</b><br />
-<sub>Scrum Master (Sprint 1) & Frontend Dev</sub>
+<sub>Scrum Master (Sprint 3) & Frontend Lead</sub>
 </td>
 <td align="center">
 <img src="https://github.com/jonmendizabal.png" width="100px;"/><br />
 <b>Jon Mendizabal</b><br />
-<sub>Scrum Master (Sprint 2) & Testing Lead</sub>
+<sub>Database Architect</sub>
 </td>
 </tr>
 <tr>
 <td align="center">
 <img src="https://github.com/InigoCalderon.png" width="100px;"/><br />
 <b>Inigo Calderon</b><br />
-<sub>Scrum Master (Sprint 3) & DevOps</sub>
+<sub>GitHub Actions & DevOps</sub>
 </td>
 <td align="center">
 <img src="https://github.com/paulajurzanqui.png" width="100px;"/><br />
@@ -496,27 +517,27 @@ docker-compose logs db
 <td align="center">
 <img src="https://github.com/DylanThomasMechella.png" width="100px;"/><br />
 <b>Dylan Thomas Mechella</b><br />
-<sub>Database Architect & QA</sub>
+<sub>Scrum Master (Sprint 1/2) & International Student Collaborator</sub>
 </td>
 </tr>
 </table>
 
 ## 📞 Support & Contact
 
-### 🤝 Getting Help
+### 🤝 Getting Help (not implemented)
 
 - **🐛 [Report Issues](https://github.com/BSPQ24-25/BSPQ25-E6/issues)** - Bug reports and feature requests
 - **💬 [Discussions](https://github.com/BSPQ24-25/BSPQ25-E6/discussions)** - Community discussions
 - **📧 [Email Support](mailto:bspq25-e6@student.deusto.es)** - Direct team contact
 
-### 🔗 Useful Links
+### 🔗 Useful Links (not implemented)
 
 - **📖 [Project Wiki](https://github.com/BSPQ24-25/BSPQ25-E6/wiki)**
 - **🌐 [Live Documentation](https://bspq24-25.github.io/BSPQ25-E6/)**
 - **📊 [Jenkins Dashboard](https://jenkins.deusto.es/job/BSPQ25-E6/)**
 - **🚀 [Live Demo](https://taskmanager-bspq25-e6.herokuapp.com/)**
 
-## 🔮 Future Enhancements
+## 🔮 Future Enhancements (wont apply)
 
 - **📱 Mobile Application** - React Native mobile app
 - **🔔 Real-time Notifications** - WebSocket-based notifications
@@ -528,12 +549,33 @@ docker-compose logs db
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+### License Summary
+
+```
+MIT License - Copyright (c) 2025 BSPQ25-E6 Team
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so.
+```
+
 ## 🌟 Acknowledgments
 
-- **University of Deusto** - For providing the academic framework
-- **Spring Boot Community** - For excellent documentation and support
-- **MySQL Team** - For the robust database system
-- **Open Source Community** - For the amazing tools and frameworks
+We extend our gratitude to the following organizations and communities:
+
+- **University of Deusto** - For providing the academic framework and project guidance
+- **🍃 Spring Boot Community** - Excellent documentation and framework support
+- **🐬 MySQL Team** - Robust and reliable database system
+- **🐳 Docker Community** - Containerization tools and best practices
+- **👥 Open Source Community** - Amazing tools, libraries, and continuous inspiration
+- **📚 Stack Overflow** - Invaluable community support and knowledge sharing
+
+### Special Thanks
+
+- **Professor [Diego Lopez de Ipiña](https://github.com/dipina)** - Project supervision and technical guidance
 
 ---
 
@@ -543,7 +585,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 [![GitHub stars](https://img.shields.io/github/stars/BSPQ24-25/BSPQ25-E6.svg?style=social&label=Star)](https://github.com/BSPQ24-25/BSPQ25-E6)
 [![GitHub forks](https://img.shields.io/github/forks/BSPQ24-25/BSPQ25-E6.svg?style=social&label=Fork)](https://github.com/BSPQ24-25/BSPQ25-E6/fork)
+[![GitHub watchers](https://img.shields.io/github/watchers/BSPQ24-25/BSPQ25-E6.svg?style=social&label=Watch)](https://github.com/BSPQ24-25/BSPQ25-E6)
 
-*Last updated: May 23, 2025 • README version: 1.0*
+*Last updated: May 23, 2025 • README version: 2.0*
 
 </div>
