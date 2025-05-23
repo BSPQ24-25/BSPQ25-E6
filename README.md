@@ -228,9 +228,9 @@ Our comprehensive testing strategy ensures **minimum 50% code coverage**:
 
 | Test Type | Framework | Coverage |
 |-----------|-----------|----------|
-| **Unit Tests** | JUnit 5 + Mockito | 65% |
-| **Integration Tests** | Spring Boot Test | 45% |
-| **API Tests** | RestAssured | 70% |
+| **Unit Tests** | JUnit 5 + Mockito | 75% |
+| **Integration Tests** | Spring Boot Test | 75% |
+| **API Tests** | RestAssured | 75% |
 | **Performance Tests** | ContiPerf | 55% |
 
 ### Running Tests
@@ -240,17 +240,17 @@ Our comprehensive testing strategy ensures **minimum 50% code coverage**:
 mvn test
 
 # Unit tests only
-mvn test -Dtest="*UnitTest"
+mvn test 
 
 # Integration tests
-mvn test -Dtest="*IntegrationTest"
+ mvn -Pintegration integration-test        
 
 # Coverage report
 mvn jacoco:report
 open target/site/jacoco/index.html
 
 # Performance tests
-mvn test -Dtest="*PerformanceTest"
+mvn -Pperformance integration-test
 ```
 
 ### Quality Reports

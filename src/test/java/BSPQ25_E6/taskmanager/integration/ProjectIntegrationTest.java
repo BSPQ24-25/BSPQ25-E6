@@ -15,16 +15,18 @@ import java.util.Map;
 import java.util.UUID;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ProjectIntegrationTest {
+public class ProjectIntegrationTest 
+{
 
     @Autowired
     private TestRestTemplate restTemplate;
 
     @Test
-    void testCreateProjectAndAssignUser() {
+    void testCreateProjectAndAssignUser() 
+    {
         String randomUUID = UUID.randomUUID().toString();
 
-        // Crear usuario con email único
+        //UNIQUE USEr
         User user = new User("Carlos-" + randomUUID, "carlos-" + randomUUID + "@email.com", "password123");
         ResponseEntity<User> userResponse = restTemplate.postForEntity("/users/register", user, User.class);
         assertEquals(HttpStatus.CREATED, userResponse.getStatusCode());
@@ -32,7 +34,7 @@ public class ProjectIntegrationTest {
         assertNotNull(createdUser);
         Long userId = createdUser.getId();
 
-        // Crear proyecto con JSON usando ProjectRequestDTO
+        //NOW NEEED DTO 
         Map<String, Object> projectRequest = new HashMap<>();
         projectRequest.put("name", "Project Integration " + randomUUID);
         projectRequest.put("description", "Integration");
@@ -50,11 +52,11 @@ public class ProjectIntegrationTest {
         assertNotNull(createdProject);
         Long projectId = createdProject.getId();
 
-        // Asignar usuario al proyecto
+        //aSSIGN USER TO PROJECT    
         ResponseEntity<String> assignResponse = restTemplate.postForEntity("/projects/" + projectId + "/addUser/" + userId, null, String.class);
         assertEquals(HttpStatus.OK, assignResponse.getStatusCode());
 
-        // Verificar que el usuario se ha asignado correctamente
+        //VERIFY USER ASSIGNMENT
         ResponseEntity<Project> projectGetResponse = restTemplate.getForEntity("/projects/" + projectId, Project.class);
         assertEquals(HttpStatus.OK, projectGetResponse.getStatusCode());
         Project fetchedProject = projectGetResponse.getBody();

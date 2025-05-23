@@ -52,7 +52,8 @@ public class ProjectControllerTest
     }
     
     @Test
-    void testCreateProject_Success() {
+    void testCreateProject_Success() 
+    {
         when(projectRepository.save(sampleProject)).thenReturn(sampleProject);
 
         String result = projectController.createProjectWeb(sampleProject, model);
